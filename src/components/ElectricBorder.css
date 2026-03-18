@@ -1,0 +1,157 @@
+.electric-border-container {
+  position: relative;
+  overflow: visible;
+  background: #000000;
+}
+
+.electric-border-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  background: #000000;
+  border: 2px solid rgba(147, 51, 234, 0.3);
+  border-radius: inherit;
+  background-clip: padding-box;
+}
+
+.electric-border-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: linear-gradient(90deg,
+    rgba(147, 51, 234, 0.2),
+    rgba(168, 85, 247, 1),
+    rgba(147, 51, 234, 0.2)
+  );
+  background-size: 200% 100%;
+  background-position: 0% 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.electric-border-wrapper::after {
+  display: none;
+}
+
+/* Purple color variant */
+.electric-border-wrapper.cyan {
+  background: #000000;
+}
+
+/* Neon shine effect */
+.electric-border-shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(147, 51, 234, 0.6) 0%, rgba(168, 85, 247, 0.3) 40%, transparent 70%);
+  opacity: 0;
+  z-index: 2;
+  transition: opacity 0.3s ease-out;
+  mix-blend-mode: screen;
+}
+
+/* Outer glow effect */
+.electric-border-glow {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  pointer-events: none;
+  border: 2px solid rgba(147, 51, 234, 0.3);
+  border-radius: inherit;
+  box-shadow:
+    0 0 15px rgba(147, 51, 234, 0.6),
+    0 0 30px rgba(168, 85, 247, 0.4),
+    inset 0 0 15px rgba(147, 51, 234, 0.2),
+    0 0 50px rgba(147, 51, 234, 0.3);
+  opacity: 0.2;
+  z-index: -1;
+  transition: opacity 0.3s ease-out;
+}
+
+/* Active state - shine visible */
+.electric-border-wrapper:not(.inactive) .electric-border-shine {
+  opacity: 1;
+}
+
+.electric-border-wrapper:not(.inactive) .electric-border-glow {
+  opacity: 1;
+}
+
+.electric-border-wrapper:not(.inactive)::before {
+  opacity: 1;
+  animation: electricBorderSweep 2s linear infinite;
+}
+
+.electric-border-wrapper:not(.inactive) {
+  border-color: rgba(168, 85, 247, 0.8);
+}
+
+/* Inactive state - animations paused */
+.electric-border-wrapper.inactive .electric-border-shine {
+  opacity: 0.1;
+}
+
+.electric-border-wrapper.inactive .electric-border-glow {
+  opacity: 0.1;
+}
+
+.electric-border-wrapper.inactive {
+  border-color: rgba(147, 51, 234, 0.2);
+}
+
+@keyframes electricBorderPulse {
+  0%, 100% {
+    box-shadow:
+      inset 0 0 0 1px rgba(147, 51, 234, 0.2),
+      0 0 0 2px rgba(147, 51, 234, 0.3),
+      0 0 12px rgba(147, 51, 234, 0.4),
+      inset 0 0 12px rgba(147, 51, 234, 0.1);
+    border-color: rgba(147, 51, 234, 0.5);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 0 1px rgba(168, 85, 247, 0.5),
+      0 0 0 2px rgba(168, 85, 247, 0.8),
+      0 0 25px rgba(147, 51, 234, 1),
+      inset 0 0 25px rgba(168, 85, 247, 0.3);
+    border-color: rgba(168, 85, 247, 1);
+  }
+}
+
+@keyframes electricGlowPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 15px rgba(147, 51, 234, 0.6),
+      0 0 30px rgba(168, 85, 247, 0.4),
+      inset 0 0 15px rgba(147, 51, 234, 0.2),
+      0 0 50px rgba(147, 51, 234, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 25px rgba(147, 51, 234, 1),
+      0 0 50px rgba(168, 85, 247, 0.8),
+      inset 0 0 25px rgba(147, 51, 234, 0.3),
+      0 0 80px rgba(147, 51, 234, 0.6);
+  }
+}
+
+@keyframes electricBorderSweep {
+  0% {
+    background-position: -200% 0;
+  }
+  50% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
