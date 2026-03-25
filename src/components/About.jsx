@@ -49,33 +49,31 @@ function About() {
         transition: 'all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)',
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 md:pr-40">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Section Header */}
         <div
           ref={headerAnim.ref}
-          className={`mb-16 transition-all duration-1000 ease-out ${
-            headerAnim.isVisible
+          className={`mb-16 transition-all duration-1000 ease-out ${headerAnim.isVisible
               ? 'opacity-100 translate-y-0'
               : 'opacity-0 translate-y-10'
-          }`}
+            }`}
         >
           <span className="text-accent text-sm font-medium tracking-wider uppercase">
             01 — About
           </span>
-          <h2 className="text-3xl md:text-5xl font-bold mt-4 tracking-tight">
+          <h2 className="text-4xl md:text-6xl font-bold mt-4 tracking-tight">
             Who I am
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
+        <div className="grid md:grid-cols-2 gap-16">
           {/* Bio */}
           <div
             ref={bioAnim.ref}
-            className={`transition-all duration-1000 delay-200 ease-out ${
-              bioAnim.isVisible
+            className={`transition-all duration-1000 delay-200 ease-out ${bioAnim.isVisible
                 ? 'opacity-100 translate-x-0'
                 : 'opacity-0 -translate-x-10'
-            }`}
+              }`}
           >
             <p className="text-gray-400 text-lg leading-relaxed mb-6">
               I'm a creative developer and designer who loves building modern
@@ -94,11 +92,10 @@ function About() {
           {/* Skills */}
           <div>
             <h3
-              className={`text-xl font-semibold mb-6 text-white transition-all duration-700 ${
-                bioAnim.isVisible
+              className={`text-xl font-semibold mb-6 text-white transition-all duration-700 ${bioAnim.isVisible
                   ? 'opacity-100 translate-y-0'
                   : 'opacity-0 translate-y-5'
-              }`}
+                }`}
             >
               Skills & Tools
             </h3>
@@ -110,9 +107,9 @@ function About() {
                            hover:bg-accent hover:text-white hover:scale-110
                            transition-all duration-300 cursor-default
                            ${visibleItems.includes(index)
-                             ? 'opacity-100 translate-y-0 scale-100'
-                             : 'opacity-0 translate-y-4 scale-95'
-                           }`}
+                      ? 'opacity-100 translate-y-0 scale-100'
+                      : 'opacity-0 translate-y-4 scale-95'
+                    }`}
                   style={{
                     transitionDelay: visibleItems.includes(index) ? '0ms' : `${index * 80}ms`
                   }}

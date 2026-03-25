@@ -35,7 +35,7 @@ function Nav() {
   return (
     <>
       {/* Desktop Right Sidebar */}
-      <nav className="hidden md:flex fixed top-0 right-0 h-screen z-50 bg-black border-l border-white/10 flex-col items-center justify-between py-6 px-3 overflow-hidden">
+      <nav className="hidden md:flex fixed top-0 right-0 h-screen z-50 bg-black border-l border-white/10 flex-col items-center justify-between py-8 px-4 overflow-hidden">
         {/* Dither Background - z-0, no mouse interaction */}
         <div className="absolute inset-0 z-0">
           <Dither
@@ -55,23 +55,21 @@ function Nav() {
           {/* Logo Top with BorderGlow */}
           <BorderGlow
             className="block"
-            borderRadius={10}
-            glowRadius={20}
+            borderRadius={12}
+            glowRadius={24}
             glowColor="260 80 70"
             backgroundColor="#000000"
             colors={['#8b5cf6', '#a855f7', '#6366f1']}
           >
-            <a href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className="block p-1 flex items-center justify-center h-20 w-28">
-              <img src={`${import.meta.env.BASE_URL}mhx_logo.png`} alt="MHX" className="h-full w-auto object-contain transform scale-125 origin-center brightness-0 invert" />
+            <a href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className="block p-1 flex items-center justify-center h-24 w-32">
+              <img src={`${import.meta.env.BASE_URL}mhx_logo.png`} alt="MHX" className="h-full w-auto object-contain transform scale-150 origin-center brightness-0 invert" />
             </a>
           </BorderGlow>
 
-          {/* Audio Visualizer Below Logo with constrained size */}
-          <div className="w-24 h-24 flex items-center justify-center">
-            <ElectricBorder borderRadius="rounded-xl" color="cyan" isActive={isAudioPlaying}>
-              <AudioVisualizer onPlayStateChange={setIsAudioPlaying} />
-            </ElectricBorder>
-          </div>
+          {/* Audio Visualizer Below Logo */}
+          <ElectricBorder borderRadius="rounded-xl" color="cyan" isActive={isAudioPlaying}>
+            <AudioVisualizer onPlayStateChange={setIsAudioPlaying} />
+          </ElectricBorder>
         </div>
 
         {/* Vertical Navigation Links with BorderGlow */}
@@ -79,8 +77,8 @@ function Nav() {
           {navLinks.map((link) => (
             <BorderGlow
               key={link.name}
-              borderRadius={6}
-              glowRadius={12}
+              borderRadius={8}
+              glowRadius={15}
               glowColor="260 80 70"
               backgroundColor="#000000"
               colors={['#8b5cf6', '#a855f7', '#6366f1']}
@@ -88,8 +86,8 @@ function Nav() {
               <a
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="block px-4 py-6 text-[13px] text-gray-400 hover:text-white transition-colors duration-300 [writing-mode:vertical-rl] rotate-180"
-                style={{ minHeight: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                className="block px-6 py-8 text-sm text-gray-400 hover:text-white transition-colors duration-300 [writing-mode:vertical-rl] rotate-180"
+                style={{ minHeight: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 {link.name}
               </a>

@@ -6,19 +6,18 @@ const dist = (a, b) => {
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const getAttr = (distance, maxDist, min, max) => {
-  // Use a more subtle curve for a smoother transition
-  const relativeDist = Math.pow(Math.min(distance / (maxDist * 1.2), 1), 1.5);
-  return max - (max - min) * relativeDist;
+const getAttr = (distance, maxDist, minVal, maxVal) => {
+  const val = maxVal - Math.abs((maxVal * distance) / maxDist);
+  return Math.max(minVal, val + minVal);
 };
 
-const debounce = (fn, ms) => {
+const debounce = (func, delay) => {
   let timeoutId;
   return (...args) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
-      fn.apply(this, args);
-    }, ms);
+      func.apply(this, args);
+    }, delay);
   };
 };
 
@@ -48,8 +47,8 @@ const TextPressure = ({
   const titleRef = useRef(null);
   const spansRef = useRef([]);
 
-  const mouseRef = useRef({ x: -1000, y: -1000 });
-  const cursorRef = useRef({ x: -1000, y: -1000 });
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const cursorRef = useRef({ x: 0, y: 0 });
 
   const [fontSize, setFontSize] = useState(minFontSize);
   const [scaleY, setScaleY] = useState(1);
@@ -113,10 +112,8 @@ const TextPressure = ({
     const { width: containerW, height: containerH } = containerRef.current.getBoundingClientRect();
     if (containerW <= 0 || containerH <= 0) return;
 
-    let newFontSize = containerW / (chars.length * 0.65);
+    let newFontSize = containerW / (chars.length / 2);
     newFontSize = Math.max(newFontSize, minFontSize);
-    // Cap font size to avoid extreme vertical squashing
-    newFontSize = Math.min(newFontSize, containerH * 0.85);
 
     setFontSize(newFontSize);
     setScaleY(1);
@@ -169,10 +166,10 @@ const TextPressure = ({
 
           const d = dist(mouseRef.current, charCenter);
 
-          const wdth = width ? Math.floor(getAttr(d, maxDist, 75, 150)) : 100;
-          const wght = weight ? Math.floor(getAttr(d, maxDist, 100, 700)) : 400;
-          const italVal = italic ? getAttr(d, maxDist, 0, 0.8).toFixed(2) : 0;
-          const alphaVal = alpha ? getAttr(d, maxDist, 0.4, 1).toFixed(2) : 1;
+          const wdth = width ? Math.floor(getAttr(d, maxDist, 5, 200)) : 100;
+          const wght = weight ? Math.floor(getAttr(d, maxDist, 100, 900)) : 400;
+          const italVal = italic ? getAttr(d, maxDist, 0, 1).toFixed(2) : 0;
+          const alphaVal = alpha ? getAttr(d, maxDist, 0, 1).toFixed(2) : 1;
 
           const newFontVariationSettings = `'wght' ${wght}, 'wdth' ${wdth}, 'ital' ${italVal}`;
 
@@ -223,9 +220,8 @@ const TextPressure = ({
       {styleElement}
       <h1
         ref={titleRef}
-        className={`text-pressure-title ${className} ${
-          flex ? 'flex justify-between' : ''
-        } ${stroke ? 'stroke' : ''} uppercase text-center transition-opacity duration-300 ${fontLoaded ? 'opacity-100' : 'opacity-0'}`}
+        className={`text-pressure-title ${className} ${flex ? 'flex justify-between' : ''
+          } ${stroke ? 'stroke' : ''} uppercase text-center transition-opacity duration-300 ${fontLoaded ? 'opacity-100' : 'opacity-0'}`}
         style={{
           fontFamily,
           fontSize: fontSize,

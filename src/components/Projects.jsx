@@ -66,20 +66,19 @@ function Projects() {
         transform: isVisible ? 'scale(1)' : 'scale(0.95)',
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 md:pr-40">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Section Header */}
         <div
           ref={headerAnim.ref}
-          className={`mb-16 transition-all duration-1000 ease-out ${
-            headerAnim.isVisible
+          className={`mb-16 transition-all duration-1000 ease-out ${headerAnim.isVisible
               ? 'opacity-100 translate-y-0'
               : 'opacity-0 translate-y-10'
-          }`}
+            }`}
         >
           <span className="text-accent text-sm font-medium tracking-wider uppercase">
             02 — Projects
           </span>
-          <h2 className="text-3xl md:text-5xl font-bold mt-4 tracking-tight">
+          <h2 className="text-4xl md:text-6xl font-bold mt-4 tracking-tight">
             Selected Works
           </h2>
         </div>
@@ -93,9 +92,9 @@ function Projects() {
                        hover:bg-dark-700 transition-all duration-500 cursor-pointer
                        hover:scale-[1.02] hover:shadow-2xl hover:shadow-accent/10
                        ${visibleItems.includes(index)
-                         ? 'opacity-100 translate-y-0'
-                         : 'opacity-0 translate-y-16'
-                       }`}
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-16'
+                }`}
               style={{
                 transitionDuration: '700ms',
                 transitionDelay: visibleItems.includes(index) ? '0ms' : `${index * 150}ms`
@@ -146,11 +145,10 @@ function Projects() {
 
         {/* View All Link */}
         <div
-          className={`mt-16 text-center transition-all duration-700 delay-500 ${
-            visibleItems.length === projects.length
+          className={`mt-16 text-center transition-all duration-700 delay-500 ${visibleItems.length === projects.length
               ? 'opacity-100 translate-y-0'
               : 'opacity-0 translate-y-5'
-          }`}
+            }`}
         >
           <a
             href="#"
