@@ -18,15 +18,15 @@ export default function RoleRotator() {
     }, [])
 
     return (
-        <div className="flex items-center justify-center uppercase font-light text-[11px] sm:text-sm md:text-base lg:text-lg tracking-[0.14em]">
+        <div className="flex items-center justify-center uppercase font-light text-[8.25px] sm:text-[10.5px] md:text-[12px] lg:text-[13.5px] tracking-[0.14em]">
             <div className="relative inline-block">
                 {/* Width/height sizer */}
                 <div className="invisible px-4 whitespace-nowrap text-white" style={{ lineHeight: rowHeight, height: rowHeight }}>
                     {longestRole} Developer
                 </div>
 
-                <div className="absolute inset-0 overflow-hidden rounded-[8px] border border-[#a955f77c] shadow-[0_0_24px_rgba(169,85,247,0.18)]">
-                    <div className="absolute inset-[-1px] z-0 rounded-[8px] overflow-hidden">
+                <div className="absolute inset-0 overflow-hidden rounded-[6px] border border-[#a955f77c] shadow-[0_0_18px_rgba(169,85,247,0.18)]">
+                  <div className="absolute inset-[-0.75px] z-0 rounded-[6px] overflow-hidden">
                         <Dither
                             waveSpeed={0.05}
                             waveFrequency={3}
@@ -39,10 +39,10 @@ export default function RoleRotator() {
                         />
                     </div>
 
-                    <div className="absolute inset-[-1px] z-[1] rounded-[8px] bg-[#05030a]/38" />
+                    <div className="absolute inset-[-0.75px] z-[1] rounded-[6px] bg-[#05030a]/38" />
 
                     <div
-                        className="absolute inset-[-1px] z-[2] rounded-[8px]"
+                        className="absolute inset-[-0.75px] z-[2] rounded-[6px]"
                         style={{
                             background:
                                 'linear-gradient(135deg, rgba(169,85,247,0.08), rgba(169,85,247,0.12), rgba(169,85,247,0.06))',
@@ -50,20 +50,20 @@ export default function RoleRotator() {
                     />
 
                     <div
-                        className="absolute inset-[-1px] z-[3] rounded-[8px] pointer-events-none"
+                        className="absolute inset-[-0.75px] z-[3] rounded-[6px] pointer-events-none"
                         style={{
                             boxShadow:
-                                'inset 0 0 20px rgba(0,0,0,0.18), inset 0 0 44px rgba(0,0,0,0.20), inset 0 0 72px rgba(0,0,0,0.14)',
-                            backdropFilter: 'blur(1px)',
-                            WebkitBackdropFilter: 'blur(1px)',
+                                'inset 0 0 15px rgba(0,0,0,0.18), inset 0 0 33px rgba(0,0,0,0.20), inset 0 0 54px rgba(0,0,0,0.14)',
+                            backdropFilter: 'blur(0.75px)',
+                            WebkitBackdropFilter: 'blur(0.75px)',
                         }}
                     />
 
                     <div
-                        className="absolute inset-0 z-[4] rounded-[8px] pointer-events-none"
+                        className="absolute inset-0 z-[4] rounded-[6px] pointer-events-none"
                         style={{
                             boxShadow:
-                                'inset 0 0 0 1px rgba(169,85,247,0.22), inset 0 0 0 2px rgba(255,255,255,0.02)',
+                                'inset 0 0 0 0.75px rgba(169,85,247,0.22), inset 0 0 0 1.5px rgba(255,255,255,0.02)',
                         }}
                     />
 

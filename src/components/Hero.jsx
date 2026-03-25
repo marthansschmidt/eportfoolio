@@ -51,8 +51,8 @@ function Hero() {
       className="relative w-screen h-screen flex items-center justify-center overflow-hidden flex-shrink-0"
       style={{
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(24px)',
-        filter: isVisible ? 'blur(0px)' : 'blur(6px)',
+        transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(18px)',
+        filter: isVisible ? 'blur(0px)' : 'blur(4.5px)',
         transition: 'all 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
@@ -80,7 +80,7 @@ function Hero() {
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            boxShadow: 'inset 0 0 140px rgba(0,0,0,0.92)',
+            boxShadow: 'inset 0 0 105px rgba(0,0,0,0.92)',
           }}
         />
       </div>
@@ -89,7 +89,7 @@ function Hero() {
         <div className="relative w-full flex flex-col items-center justify-center">
           {/* MHX box */}
           <div className="relative flex items-center justify-center w-full">
-            <div className="relative w-[88vw] max-w-[1500px] h-[29vw] max-h-[390px] min-h-[240px] rounded-none overflow-hidden border border-[#7c3aed]/30 shadow-[0_0_60px_rgba(76,29,149,0.18)]">
+            <div className="relative w-[66vw] max-w-[1125px] h-[22vw] max-h-[292px] min-h-[180px] rounded-none overflow-hidden border border-[#7c3aed]/30 shadow-[0_0_60px_rgba(76,29,149,0.18)]">
               {/* Dither background */}
               <div className="absolute inset-0 z-0">
                 <Dither
@@ -115,9 +115,9 @@ function Hero() {
                 className="absolute inset-0 z-[3] rounded-none pointer-events-none"
                 style={{
                   boxShadow:
-                    'inset 0 0 30px rgba(0,0,0,0.18), inset 0 0 70px rgba(0,0,0,0.22), inset 0 0 110px rgba(0,0,0,0.16)',
-                  backdropFilter: 'blur(1.5px)',
-                  WebkitBackdropFilter: 'blur(1.5px)',
+                    'inset 0 0 22.5px rgba(0,0,0,0.18), inset 0 0 52.5px rgba(0,0,0,0.22), inset 0 0 82.5px rgba(0,0,0,0.16)',
+                  backdropFilter: 'blur(1.1px)',
+                  WebkitBackdropFilter: 'blur(1.1px)',
                 }}
               />
 
@@ -154,7 +154,7 @@ function Hero() {
                       italic={true}
                       textColor="#a955f77c"
                       strokeColor="#a955f77c"
-                      minFontSize={120}
+                      minFontSize={90}
                       scale={true}
                     />
                   )}

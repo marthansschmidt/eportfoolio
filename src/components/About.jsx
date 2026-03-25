@@ -44,8 +44,8 @@ function About() {
       className="w-screen h-screen py-32 bg-dark-800 flex flex-col justify-center flex-shrink-0"
       style={{
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateX(0) scale(1)' : 'translateX(-80px) scale(0.95)',
-        filter: isVisible ? 'blur(0px)' : 'blur(6px)',
+        transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(18px)',
+        filter: isVisible ? 'blur(0px)' : 'blur(4.5px)',
         transition: 'all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)',
       }}
     >

@@ -55,8 +55,8 @@ function Nav() {
           {/* Logo Top with BorderGlow */}
           <BorderGlow
             className="block"
-            borderRadius={12}
-            glowRadius={24}
+            borderRadius={9}
+            glowRadius={18}
             glowColor="260 80 70"
             backgroundColor="#000000"
             colors={['#8b5cf6', '#a855f7', '#6366f1']}
@@ -77,8 +77,8 @@ function Nav() {
           {navLinks.map((link) => (
             <BorderGlow
               key={link.name}
-              borderRadius={8}
-              glowRadius={15}
+              borderRadius={6}
+              glowRadius={11}
               glowColor="260 80 70"
               backgroundColor="#000000"
               colors={['#8b5cf6', '#a855f7', '#6366f1']}
@@ -87,7 +87,7 @@ function Nav() {
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
                 className="block px-6 py-8 text-sm text-gray-400 hover:text-white transition-colors duration-300 [writing-mode:vertical-rl] rotate-180"
-                style={{ minHeight: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                style={{ minHeight: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 {link.name}
               </a>

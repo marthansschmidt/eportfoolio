@@ -15,15 +15,15 @@
   position: absolute;
   left: 50%;
   z-index: 10;
-  width: 60px;
-  height: 60px;
+  width: 45px;
+  height: 45px;
   display: grid;
   place-items: center;
   background: #8b5cf6;
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  border: 5px solid #000;
+  border: 3.75px solid #000;
 }
 
 .face-title {
@@ -40,8 +40,8 @@
   user-select: none;
   position: relative;
   color: #fff;
-  top: 2px;
-  font-size: 26px;
+  top: 1.5px;
+  font-size: 19.5px;
 }
 
 .face-title {
@@ -102,7 +102,7 @@
 }
 
 .action-button.inactive {
-  bottom: -80px;
+  bottom: -60px;
   transform: translateX(-50%) scale(0);
   opacity: 0;
   pointer-events: none;
