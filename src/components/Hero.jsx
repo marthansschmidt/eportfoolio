@@ -85,11 +85,11 @@ function Hero() {
         />
       </div>
 
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6">
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 md:pr-32 lg:pr-40">
         <div className="relative w-full flex flex-col items-center justify-center">
           {/* MHX box */}
           <div className="relative flex items-center justify-center w-full">
-            <div className="relative w-[88vw] max-w-[1500px] h-[29vw] max-h-[390px] min-h-[240px] rounded-none overflow-hidden border border-[#7c3aed]/30 shadow-[0_0_60px_rgba(76,29,149,0.18)]">
+            <div className="relative w-[82vw] max-w-[1300px] h-[26vw] max-h-[340px] min-h-[220px] rounded-none overflow-hidden border border-[#7c3aed]/25 shadow-[0_0_50px_rgba(76,29,149,0.14)]">
               {/* Dither background */}
               <div className="absolute inset-0 z-0">
                 <Dither
@@ -154,7 +154,7 @@ function Hero() {
                       italic={true}
                       textColor="#a955f77c"
                       strokeColor="#a955f77c"
-                      minFontSize={120}
+                      minFontSize={100}
                       scale={true}
                     />
                   )}

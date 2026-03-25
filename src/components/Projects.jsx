@@ -66,7 +66,7 @@ function Projects() {
         transform: isVisible ? 'scale(1)' : 'scale(0.95)',
       }}
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 md:pr-40">
         {/* Section Header */}
         <div
           ref={headerAnim.ref}
@@ -79,7 +79,7 @@ function Projects() {
           <span className="text-accent text-sm font-medium tracking-wider uppercase">
             02 — Projects
           </span>
-          <h2 className="text-4xl md:text-6xl font-bold mt-4 tracking-tight">
+          <h2 className="text-3xl md:text-5xl font-bold mt-4 tracking-tight">
             Selected Works
           </h2>
         </div>

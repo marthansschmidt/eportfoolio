@@ -49,7 +49,7 @@ function About() {
         transition: 'all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)',
       }}
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 md:pr-40">
         {/* Section Header */}
         <div
           ref={headerAnim.ref}
@@ -62,12 +62,12 @@ function About() {
           <span className="text-accent text-sm font-medium tracking-wider uppercase">
             01 — About
           </span>
-          <h2 className="text-4xl md:text-6xl font-bold mt-4 tracking-tight">
+          <h2 className="text-3xl md:text-5xl font-bold mt-4 tracking-tight">
             Who I am
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-16">
+        <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
           {/* Bio */}
           <div
             ref={bioAnim.ref}
