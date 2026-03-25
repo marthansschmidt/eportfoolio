@@ -1,9 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import * as THREE from 'three';
 import { createNoise3D } from 'simplex-noise';
 import './AudioVisualizer.css';
 
-export default function AudioVisualizer({ className = '', defaultAudio = '/muusika.mp3', onPlayStateChange }) {
+export default function AudioVisualizer({ className = '', defaultAudio, onPlayStateChange }) {
+  // Use muusika.mp3 as default if none provided, adding a stable timestamp (per-mount) to bypass cache
+  const audioSrc = useMemo(() => {
+    return defaultAudio || `${import.meta.env.BASE_URL}muusika.mp3?v=${new Date().getTime()}`;
+  }, [defaultAudio]);
   const containerRef = useRef(null);
   const audioRef = useRef(null);
   const analyserRef = useRef(null);
@@ -11,26 +15,53 @@ export default function AudioVisualizer({ className = '', defaultAudio = '/muusi
   const [volume, setVolume] = useState(0.5);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // Initialize with default audio
+  // Initialize audio element on mount for pre-loading
   useEffect(() => {
-    if (defaultAudio && audioRef.current === null) {
-      const audio = new Audio(defaultAudio);
-      audio.volume = volume;
-      audioRef.current = audio;
+    if (!audioSrc) return;
+    
+    const audio = new Audio(audioSrc);
+    audio.volume = volume;
+    audio.preload = 'auto';
+    audio.crossOrigin = 'anonymous';
+    audioRef.current = audio;
 
-      // Setup audio context and analyser
+    const handleEnded = () => {
+      setIsPlaying(false);
+      if (onPlayStateChange) onPlayStateChange(false);
+    };
+
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      audio.removeEventListener('ended', handleEnded);
+      audio.pause();
+      audioRef.current = null;
+    };
+  }, [audioSrc, onPlayStateChange]); // Only re-create if source changes
+
+  // Initialize Web Audio API components (must be on user interaction)
+  const initAudioEngine = () => {
+    if (!audioRef.current || analyserRef.current) return;
+
+    try {
       if (!contextRef.current) {
-        contextRef.current = new AudioContext();
+        contextRef.current = new (window.AudioContext || window.webkitAudioContext)();
       }
 
-      const src = contextRef.current.createMediaElementSource(audio);
+      if (contextRef.current.state === 'suspended') {
+        contextRef.current.resume();
+      }
+
       const analyser = contextRef.current.createAnalyser();
+      const src = contextRef.current.createMediaElementSource(audioRef.current);
       src.connect(analyser);
       analyser.connect(contextRef.current.destination);
       analyser.fftSize = 512;
       analyserRef.current = analyser;
+    } catch (err) {
+      console.error('Audio engine initialization failed:', err);
     }
-  }, [defaultAudio]);
+  };
 
   // Handle volume change
   useEffect(() => {
@@ -185,17 +216,19 @@ export default function AudioVisualizer({ className = '', defaultAudio = '/muusi
   const togglePlay = () => {
     if (!audioRef.current) return;
 
-    // Resume audio context if suspended (required by modern browsers)
-    if (contextRef.current && contextRef.current.state === 'suspended') {
-      contextRef.current.resume();
-    }
+    // Initialize/resume engine on first play click
+    initAudioEngine();
 
     if (audioRef.current.paused) {
-      audioRef.current.play().catch(err => {
-        console.error('Error playing audio:', err);
-      });
-      setIsPlaying(true);
-      if (onPlayStateChange) onPlayStateChange(true);
+      audioRef.current.play()
+        .then(() => {
+          setIsPlaying(true);
+          if (onPlayStateChange) onPlayStateChange(true);
+        })
+        .catch(err => {
+          console.error('Error playing audio:', err);
+          setIsPlaying(false);
+        });
     } else {
       audioRef.current.pause();
       setIsPlaying(false);

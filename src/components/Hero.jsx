@@ -1,11 +1,13 @@
-import GradualBlur from './GradualBlur'
-import Iridescence from './Iridescence'
-import TiltedCard from './TiltedCard'
+import TextPressure from './TextPressure'
+import Dither from './Dither'
+import RoleRotator from './RoleRotator'
 import { useEffect, useRef, useState } from 'react'
 
 function Hero() {
   const sectionRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [textReady, setTextReady] = useState(false)
+  const [textKey, setTextKey] = useState(0)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -24,88 +26,154 @@ function Hero() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTextReady(true)
+      setTextKey((prev) => prev + 1)
+    }, 80)
+
+    const handleResize = () => {
+      setTextKey((prev) => prev + 1)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   return (
     <section
       ref={sectionRef}
       id="hero"
-      className="relative w-screen h-screen flex items-center justify-center overflow-hidden flex-shrink-0 transition-all duration-1000"
+      className="relative w-screen h-screen flex items-center justify-center overflow-hidden flex-shrink-0"
       style={{
-        opacity: isVisible ? 1 : 0.7,
-        transform: isVisible ? 'scale(1)' : 'scale(0.95)',
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(24px)',
+        filter: isVisible ? 'blur(0px)' : 'blur(6px)',
+        transition: 'all 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
       {/* Video Background */}
-      <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-        >
-          <source src="/banner.mp4" type="video/mp4" />
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <video autoPlay loop muted playsInline className="w-full h-full object-cover grayscale">
+          <source src={`${import.meta.env.BASE_URL}banner.mp4`} type="video/mp4" />
         </video>
-        {/* Blur + Dark Overlay */}
-        <div className="absolute inset-0 backdrop-blur-sm bg-dark-900/70" />
+
+        <div className="absolute inset-0 bg-black/60" />
+
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `
+              radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.22) 62%, rgba(0,0,0,0.52) 80%, rgba(0,0,0,0.88) 100%),
+              linear-gradient(to top, rgba(0,0,0,0.76), transparent 24%, transparent 76%, rgba(0,0,0,0.64)),
+              linear-gradient(to right, rgba(0,0,0,0.68), transparent 16%, transparent 84%, rgba(0,0,0,0.68))
+            `,
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+          }}
+        />
+
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            boxShadow: 'inset 0 0 140px rgba(0,0,0,0.92)',
+          }}
+        />
       </div>
 
-      {/* Gradual Blur at Bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-64 z-[5]">
-        <GradualBlur direction="bottom" blurLayers={8} maxBlur={40} />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-dark-900" />
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-        {/* Main Logo with TiltedCard + Iridescence */}
-        <div className="mb-8 inline-block">
-          <TiltedCard
-            rotateAmplitude={20}
-            scaleOnHover={1.15}
-            showTooltip={false}
-            displayOverlayContent={false}
-            containerHeight="auto"
-            containerWidth="auto"
-          >
-            <div className="p-4 md:p-8 lg:p-12 rounded-2xl overflow-hidden relative">
-              {/* Iridescence Background */}
-              <div className="absolute inset-0">
-                <Iridescence
-                  color={[0.3, 0.2, 0.4]}
-                  speed={1.0}
-                  amplitude={0.1}
-                  mouseReact={true}
-                  colorCycle={true}
-                  cycleSpeed={0.05}
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6">
+        <div className="relative w-full flex flex-col items-center justify-center">
+          {/* MHX box */}
+          <div className="relative flex items-center justify-center w-full">
+            <div className="relative w-[88vw] max-w-[1500px] h-[29vw] max-h-[390px] min-h-[240px] rounded-none overflow-hidden border border-[#7c3aed]/30 shadow-[0_0_60px_rgba(76,29,149,0.18)]">
+              {/* Dither background */}
+              <div className="absolute inset-0 z-0">
+                <Dither
+                  waveSpeed={0.05}
+                  waveFrequency={3}
+                  waveAmplitude={0.3}
+                  waveColor={[0.3, 0.3, 0.4]}
+                  colorNum={4}
+                  pixelSize={2}
+                  enableMouseInteraction={false}
+                  mouseRadius={1}
                 />
               </div>
-              {/* Overlay for better logo visibility */}
-              <div className="absolute inset-0 bg-dark-900/30 backdrop-blur-sm" />
-              {/* Logo */}
-              <img
-                src="/mhx_logo.png"
-                alt="MHX"
-                className="h-48 md:h-64 lg:h-96 w-auto mx-auto relative z-10"
+
+              {/* Dark tint */}
+              <div className="absolute inset-0 z-[1] bg-[#05030a]/38" />
+
+              {/* Slight purple/blue tint tied to navbar */}
+              <div className="absolute inset-0 z-[2] bg-[linear-gradient(135deg,rgba(99,102,241,0.08),rgba(168,85,247,0.10),rgba(59,130,246,0.06))]" />
+
+              {/* Edge blur / fade inside box */}
+              <div
+                className="absolute inset-0 z-[3] rounded-none pointer-events-none"
+                style={{
+                  boxShadow:
+                    'inset 0 0 30px rgba(0,0,0,0.18), inset 0 0 70px rgba(0,0,0,0.22), inset 0 0 110px rgba(0,0,0,0.16)',
+                  backdropFilter: 'blur(1.5px)',
+                  WebkitBackdropFilter: 'blur(1.5px)',
+                }}
               />
+
+              {/* Extra edge vignette so center stays clearer */}
+              <div
+                className="absolute inset-0 z-[4] rounded-none pointer-events-none"
+                style={{
+                  background:
+                    'radial-gradient(circle at center, rgba(0,0,0,0) 48%, rgba(0,0,0,0.10) 72%, rgba(0,0,0,0.22) 100%)',
+                }}
+              />
+
+              {/* Inner border glow */}
+              <div
+                className="absolute inset-0 z-[5] rounded-none pointer-events-none"
+                style={{
+                  boxShadow:
+                    'inset 0 0 0 1px rgba(168,85,247,0.14), inset 0 0 0 2px rgba(255,255,255,0.02)',
+                }}
+              />
+
+              {/* MHX */}
+              <div className="relative z-10 w-full h-full flex items-center justify-center overflow-hidden">
+                <div className="w-[84%] h-[70%] px-[2.5%] flex items-center justify-center overflow-hidden">
+                  {textReady && (
+                    <TextPressure
+                      key={textKey}
+                      text="MHX"
+                      flex={true}
+                      alpha={false}
+                      stroke={false}
+                      width={false}
+                      weight={true}
+                      italic={true}
+                      textColor="#a955f77c"
+                      strokeColor="#a955f77c"
+                      minFontSize={120}
+                      scale={true}
+                    />
+                  )}
+                </div>
+              </div>
             </div>
-          </TiltedCard>
+          </div>
+
+          <div className="mt-8 md:mt-10 text-center w-full flex items-center justify-center px-4">
+            <RoleRotator />
+          </div>
         </div>
 
-        {/* Role/Title */}
-        <div className="mb-12">
-          <p className="text-xl md:text-2xl text-gray-400 font-light">
-           Rasmus pls help
-          </p>
-        </div>
-
-        {/* Tagline */}
-        <div className="max-w-2xl mx-auto mb-16">
-          <p className="text-lg md:text-xl text-gray-500 leading-relaxed">
-            I create digital solutions that are both beautiful and functional.
-          </p>
+        <div className="max-w-2xl mx-auto mt-6 mb-10 px-4 text-center">
+          <p className="text-sm md:text-lg text-gray-500 leading-relaxed"></p>
         </div>
 
         {/* Scroll Indicator */}
-        <div className="animate-bounce">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
           <a href="#about" className="inline-block">
             <svg
               className="w-8 h-8 text-gray-500"

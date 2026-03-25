@@ -41,10 +41,12 @@ function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="w-screen h-screen py-32 bg-dark-800 flex flex-col justify-center flex-shrink-0 transition-all duration-1000"
+      className="w-screen h-screen py-32 bg-dark-800 flex flex-col justify-center flex-shrink-0"
       style={{
-        opacity: isVisible ? 1 : 0.7,
-        transform: isVisible ? 'scale(1)' : 'scale(0.95)',
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateX(0) scale(1)' : 'translateX(-80px) scale(0.95)',
+        filter: isVisible ? 'blur(0px)' : 'blur(6px)',
+        transition: 'all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)',
       }}
     >
       <div className="max-w-7xl mx-auto px-6">

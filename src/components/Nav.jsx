@@ -19,7 +19,8 @@ function Nav() {
     e.preventDefault()
     const element = document.querySelector(href)
     if (element) {
-      const scrollContainer = element.parentElement
+      // Get the main scroll container (parent of main, which is parent of sections)
+      const scrollContainer = element.parentElement?.parentElement
       if (scrollContainer) {
         const targetPosition = element.offsetLeft
         scrollContainer.scrollTo({
@@ -50,7 +51,7 @@ function Nav() {
         </div>
 
         {/* Logo and Audio Visualizer Top */}
-        <div className="relative z-20 flex flex-col items-center gap-4">
+        <div className="relative z-20 flex flex-col items-center gap-6">
           {/* Logo Top with BorderGlow */}
           <BorderGlow
             className="block"
@@ -61,7 +62,7 @@ function Nav() {
             colors={['#8b5cf6', '#a855f7', '#6366f1']}
           >
             <a href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className="block p-1 flex items-center justify-center h-24 w-32">
-              <img src="/logo 2.png" alt="MHX" className="h-full w-full object-contain" />
+              <img src={`${import.meta.env.BASE_URL}mhx_logo.png`} alt="MHX" className="h-full w-auto object-contain transform scale-150 origin-center brightness-0 invert" />
             </a>
           </BorderGlow>
 
@@ -72,7 +73,7 @@ function Nav() {
         </div>
 
         {/* Vertical Navigation Links with BorderGlow */}
-        <div className="relative z-20 flex flex-col items-center gap-2">
+        <div className="relative z-20 flex flex-col items-center gap-4">
           {navLinks.map((link) => (
             <BorderGlow
               key={link.name}
@@ -85,7 +86,8 @@ function Nav() {
               <a
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="block px-5 py-4 text-sm text-gray-400 hover:text-white transition-colors duration-300 [writing-mode:vertical-rl] rotate-180"
+                className="block px-6 py-8 text-sm text-gray-400 hover:text-white transition-colors duration-300 [writing-mode:vertical-rl] rotate-180"
+                style={{ minHeight: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 {link.name}
               </a>
@@ -102,8 +104,8 @@ function Nav() {
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <a href="#hero" className="hover:opacity-80 transition-opacity duration-300">
-              <img src="/mhx_logo_nav.png" alt="MHX" className="h-12 w-auto brightness-0 invert" />
+            <a href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className="hover:opacity-80 transition-opacity duration-300">
+              <img src={`${import.meta.env.BASE_URL}mhx_logo.png`} alt="MHX" className="h-16 w-auto brightness-0 invert" />
             </a>
 
             {/* Mobile Menu Button */}
