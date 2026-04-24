@@ -21,25 +21,47 @@ export default function LogoLoop({
           '--gap': `${gap}px`
         }}
       >
-        {[...Array(4)].map((_, setIndex) => (
+        {[...Array(20)].map((_, setIndex) => (
           <div key={setIndex} className="logo-loop-set">
-            {logos.map((logo, index) => (
-              <div
-                key={`${setIndex}-${index}`}
-                className="logo-loop-item"
-                style={{ height: `${logoHeight}px` }}
-              >
-                {typeof logo === 'string' ? (
-                  <img
-                    src={logo}
-                    alt={`Logo ${index + 1}`}
-                    style={{ height: '100%', width: 'auto', objectFit: 'contain' }}
-                  />
-                ) : (
-                  logo
-                )}
-              </div>
-            ))}
+            {logos.map((logoItem, index) => {
+              const logo = typeof logoItem === 'string' ? logoItem : logoItem.src
+              const link = typeof logoItem === 'string' ? null : logoItem.link
+              
+              const logoContent = (
+                <>
+                  {typeof logo === 'string' ? (
+                    <img
+                      src={logo}
+                      alt={`Logo ${index + 1}`}
+                      style={{ height: '100%', width: 'auto', objectFit: 'contain' }}
+                    />
+                  ) : (
+                    logo
+                  )}
+                </>
+              )
+
+              return (
+                <div
+                  key={`${setIndex}-${index}`}
+                  className="logo-loop-item"
+                  style={{ height: `${logoHeight}px` }}
+                >
+                  {link ? (
+                    <a 
+                      href={link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}
+                    >
+                      {logoContent}
+                    </a>
+                  ) : (
+                    logoContent
+                  )}
+                </div>
+              )
+            })}
           </div>
         ))}
       </div>

@@ -12,7 +12,7 @@ export default function AudioVisualizer({ className = '', defaultAudio, onPlaySt
   const audioRef = useRef(null);
   const analyserRef = useRef(null);
   const contextRef = useRef(null);
-  const [volume, setVolume] = useState(0.5);
+  const [volume, setVolume] = useState(0.2);
   const [isPlaying, setIsPlaying] = useState(false);
 
   // Initialize audio element on mount for pre-loading
@@ -246,9 +246,9 @@ export default function AudioVisualizer({ className = '', defaultAudio, onPlaySt
       <div className="audio-visualizer-controls">
         <input
           type="range"
-          min="0"
+          min="0.1"
           max="1"
-          step="0.01"
+          step="0.1"
           value={volume}
           onChange={(e) => setVolume(parseFloat(e.target.value))}
           className="audio-volume-slider"

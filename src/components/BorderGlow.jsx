@@ -51,6 +51,7 @@ function animateValue({ start = 0, end = 100, duration = 1000, delay = 0, ease =
 const BorderGlow = ({
   children,
   className = '',
+  style = {},
   edgeSensitivity = 30,
   glowColor = '40 80 80',
   backgroundColor = '#060010',
@@ -139,6 +140,7 @@ const BorderGlow = ({
         '--fill-opacity': fillOpacity,
         ...glowVars,
         ...buildGradientVars(colors),
+        ...style,
       }}
     >
       <span className="edge-light" />

@@ -1,6 +1,7 @@
 import TextPressure from './TextPressure'
 import Dither from './Dither'
 import RoleRotator from './RoleRotator'
+import ProfileCard from './ProfileCard'
 import { useEffect, useRef, useState } from 'react'
 
 function Hero() {
@@ -85,11 +86,11 @@ function Hero() {
         />
       </div>
 
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6">
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 py-12">
         <div className="relative w-full flex flex-col items-center justify-center">
           {/* MHX box */}
           <div className="relative flex items-center justify-center w-full">
-            <div className="relative w-[66vw] max-w-[1125px] h-[22vw] max-h-[292px] min-h-[180px] rounded-none overflow-hidden border border-[#7c3aed]/30 shadow-[0_0_60px_rgba(76,29,149,0.18)]">
+            <div className="relative w-[80vw] max-w-[1200px] h-[20vh] max-h-[180px] min-h-[120px] rounded-none overflow-hidden border border-[#7c3aed]/30 shadow-[0_0_60px_rgba(76,29,149,0.18)]">
               {/* Dither background */}
               <div className="absolute inset-0 z-0">
                 <Dither
@@ -141,7 +142,7 @@ function Hero() {
 
               {/* MHX */}
               <div className="relative z-10 w-full h-full flex items-center justify-center overflow-hidden">
-                <div className="w-[84%] h-[70%] px-[2.5%] flex items-center justify-center overflow-hidden">
+                <div className="w-[90%] h-[85%] px-[1%] flex items-center justify-center overflow-hidden">
                   {textReady && (
                     <TextPressure
                       key={textKey}
@@ -154,7 +155,7 @@ function Hero() {
                       italic={true}
                       textColor="#a955f77c"
                       strokeColor="#a955f77c"
-                      minFontSize={90}
+                      minFontSize={100}
                       scale={true}
                     />
                   )}
@@ -163,32 +164,27 @@ function Hero() {
             </div>
           </div>
 
-          <div className="mt-8 md:mt-10 text-center w-full flex items-center justify-center px-4">
-            <RoleRotator />
-          </div>
-        </div>
-
-        <div className="max-w-2xl mx-auto mt-6 mb-10 px-4 text-center">
-          <p className="text-sm md:text-lg text-gray-500 leading-relaxed"></p>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <a href="#about" className="inline-block">
-            <svg
-              className="w-8 h-8 text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
+          {/* ProfileCard */}
+          <div className="mt-12 md:mt-20 flex items-center justify-center px-4 w-full h-auto">
+            <div style={{ width: '100%', maxWidth: '720px', minHeight: '550px' }}>
+              <ProfileCard
+                avatarUrl={`${import.meta.env.BASE_URL}Märt_Hans.png`}
+                miniAvatarUrl={`${import.meta.env.BASE_URL}Märt_Hans.png`}
+                name="Märt Hansschmidt"
+                title="Junior Developer"
+                handle="mhx"
+                status="Available"
+                contactText="Contact"
+                showUserInfo={true}
+                enableTilt={true}
+                enableMobileTilt={false}
+                behindGlowEnabled={true}
+                behindGlowColor="rgba(125, 190, 255, 0.67)"
+                innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
+                className="w-full"
               />
-            </svg>
-          </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -34,8 +34,8 @@ function Nav() {
 
   return (
     <>
-      {/* Desktop Right Sidebar */}
-      <nav className="hidden md:flex fixed top-0 right-0 h-screen z-50 bg-black border-l border-white/10 flex-col items-center justify-between py-8 px-4 overflow-hidden">
+      {/* Desktop Left Sidebar */}
+      <nav className="hidden md:flex fixed top-0 left-0 h-screen z-50 bg-black border-r border-white/10 flex-col items-center justify-between py-8 px-6 overflow-hidden">
         {/* Dither Background - z-0, no mouse interaction */}
         <div className="absolute inset-0 z-0">
           <Dither
@@ -54,7 +54,7 @@ function Nav() {
         <div className="relative z-20 flex flex-col items-center gap-6">
           {/* Logo Top with BorderGlow */}
           <BorderGlow
-            className="block"
+            className="w-32 h-24"
             borderRadius={9}
             glowRadius={18}
             glowColor="260 80 70"
@@ -73,12 +73,13 @@ function Nav() {
         </div>
 
         {/* Vertical Navigation Links with BorderGlow */}
-        <div className="relative z-20 flex flex-col items-center gap-4">
+        <div className="relative z-20 flex flex-col items-center gap-12">
           {navLinks.map((link) => (
             <BorderGlow
               key={link.name}
-              borderRadius={6}
-              glowRadius={11}
+              className="w-32"
+              borderRadius={8}
+              glowRadius={12}
               glowColor="260 80 70"
               backgroundColor="#000000"
               colors={['#8b5cf6', '#a855f7', '#6366f1']}
@@ -86,8 +87,7 @@ function Nav() {
               <a
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="block px-6 py-8 text-sm text-gray-400 hover:text-white transition-colors duration-300 [writing-mode:vertical-rl] rotate-180"
-                style={{ minHeight: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                className="w-full block py-6 text-lg font-bold text-gray-400 hover:text-white transition-colors duration-300 flex items-center justify-center text-center"
               >
                 {link.name}
               </a>

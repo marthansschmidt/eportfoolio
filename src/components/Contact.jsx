@@ -23,12 +23,10 @@ function Contact() {
   }, [])
 
   const techLogos = [
-    `${import.meta.env.BASE_URL}logos/react.svg`,
-    `${import.meta.env.BASE_URL}logos/javascript.svg`,
-    `${import.meta.env.BASE_URL}logos/nodejs.svg`,
-    `${import.meta.env.BASE_URL}logos/tailwind.svg`,
-    `${import.meta.env.BASE_URL}logos/typescript.svg`,
-    `${import.meta.env.BASE_URL}vite.svg`,
+    { src: `${import.meta.env.BASE_URL}vite.svg`, link: null },
+    { src: `${import.meta.env.BASE_URL}Linkedin_logo_initials.png.webp`, link: null },
+    { src: `${import.meta.env.BASE_URL}Spotify_logo_without_text.svg.png`, link: 'https://open.spotify.com/playlist/5Vn7Rk6XjJ8uoWHywlQUGr?si=64a9b813a79041af' },
+    { src: `${import.meta.env.BASE_URL}github.png`, link: 'https://github.com/marthansschmidt' },
   ]
 
   return (
@@ -46,9 +44,9 @@ function Contact() {
       <div className="pb-16">
         <LogoLoop
           logos={techLogos}
-          speed={50}
-          logoHeight={120}
-          gap={80}
+          speed={12}
+          logoHeight={60}
+          gap={40}
           direction="right"
         />
       </div>

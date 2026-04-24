@@ -2,6 +2,9 @@
   width: 100%;
   overflow: hidden;
   position: relative;
+  z-index: 10;
+  margin: -10px 0;
+  padding: 10px 0;
 }
 
 .logo-loop-track {
@@ -31,6 +34,7 @@
 .logo-loop-item:hover {
   filter: grayscale(0%);
   opacity: 1;
+  transform: scale(1.2);
 }
 
 @keyframes logo-scroll {
@@ -38,8 +42,17 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-25%);
+    transform: translateX(calc(-100% / 2));
   }
+}
+
+.logo-loop-item a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
 }
 
 .logo-loop-container:hover .logo-loop-track {
