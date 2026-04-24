@@ -24,8 +24,8 @@ function Contact() {
 
   const techLogos = [
     { src: `${import.meta.env.BASE_URL}vite.svg`, link: null },
-    { src: `${import.meta.env.BASE_URL}LinkedIn_logo_initials.png.webp`, link: null },
-    { src: `${import.meta.env.BASE_URL}Spotify_logo_without_text.svg.png`, link: 'https://open.spotify.com/playlist/5Vn7Rk6XjJ8uoWHywlQUGr?si=64a9b813a79041af' },
+    { src: `${import.meta.env.BASE_URL}linkedin.webp`, link: null },
+    { src: `${import.meta.env.BASE_URL}spotify.png`, link: 'https://open.spotify.com/playlist/5Vn7Rk6XjJ8uoWHywlQUGr?si=64a9b813a79041af' },
     { src: `${import.meta.env.BASE_URL}github.png`, link: 'https://github.com/marthansschmidt' },
   ]
 

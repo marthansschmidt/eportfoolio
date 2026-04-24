@@ -168,8 +168,8 @@ function Hero() {
           <div className="mt-12 md:mt-20 flex items-center justify-center px-4 w-full h-auto">
             <div style={{ width: '100%', maxWidth: '720px', minHeight: '550px' }}>
               <ProfileCard
-                avatarUrl={`${import.meta.env.BASE_URL}Märt_Hans.png`}
-                miniAvatarUrl={`${import.meta.env.BASE_URL}Märt_Hans.png`}
+                avatarUrl={`${import.meta.env.BASE_URL}Mart_Hans.png`}
+                miniAvatarUrl={`${import.meta.env.BASE_URL}Mart_Hans.png`}
                 name="Märt Hansschmidt"
                 title="Junior Developer"
                 handle="mhx"
