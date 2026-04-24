@@ -57,7 +57,7 @@ const ProfileCardComponent = ({
                   className="block transition-all hover:scale-110 active:scale-95"
                 >
                   <img 
-                    src="github.png" 
+                    src={`${import.meta.env.BASE_URL}github.png`} 
                     alt="GitHub" 
                     className="w-10 h-10 md:w-12 md:h-12 invert brightness-200 opacity-80" 
                   />
