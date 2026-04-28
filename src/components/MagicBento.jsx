@@ -6,42 +6,42 @@ const DEFAULT_SPOTLIGHT_RADIUS = 300;
 const DEFAULT_GLOW_COLOR = '132, 0, 255';
 const MOBILE_BREAKPOINT = 768;
 
-const cardData = [
+const defaultCardData = [
   {
     color: '#120F17',
-    title: 'Analytics',
-    description: 'Track user behavior',
-    label: 'Insights'
+    title: 'Junior Software Developer',
+    description: 'Student at Tartu Vocational College, driven by a lifelong fascination with how digital systems solve real-world problems.',
+    label: 'Currently'
   },
   {
     color: '#120F17',
-    title: 'Dashboard',
-    description: 'Centralized data view',
-    label: 'Overview'
+    title: 'IT Silver Medalist',
+    description: 'Graduated high school with a silver medal in Information Technology, providing a strong foundation for software development.',
+    label: 'Foundation'
   },
   {
     color: '#120F17',
-    title: 'Collaboration',
-    description: 'Work together seamlessly',
-    label: 'Teamwork'
+    title: 'User-Centric Developer',
+    description: 'Extensive experience in high-level technical sales at Elisa and Klick, applying a unique perspective to build intuitive solutions.',
+    label: 'Experience'
   },
   {
     color: '#120F17',
-    title: 'Automation',
-    description: 'Streamline workflows',
-    label: 'Efficiency'
+    title: 'Creative Content Creator',
+    description: 'Active tech enthusiast with a creative edge, producing videos using Sony Vegas Pro and building custom PCs.',
+    label: 'Creativity'
   },
   {
     color: '#120F17',
-    title: 'Integration',
-    description: 'Connect favorite tools',
-    label: 'Connectivity'
+    title: 'Apple Excellence',
+    description: 'Completed the Apple Excellence program, mastering the nuances of modern consumer technology and ecosystems.',
+    label: 'Expertise'
   },
   {
     color: '#120F17',
-    title: 'Security',
-    description: 'Enterprise-grade protection',
-    label: 'Protection'
+    title: 'Results-Driven Mindset',
+    description: 'Combining technical expertise with a proactive approach to deliver high-quality work in every project.',
+    label: 'Philosophy'
   }
 ];
 
@@ -459,7 +459,7 @@ const BentoCardGrid = ({ children, gridRef }) => (
     style={{
       gridTemplateColumns: 'auto',
       margin: '0 auto',
-      fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.5rem)',
+      fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.25rem)',
       maxWidth: '1400px'
     }}
     ref={gridRef}
@@ -484,7 +484,7 @@ const useMobileDetection = () => {
 };
 
 const MagicBento = ({
-  textAutoHide = true,
+  textAutoHide = false,
   enableStars = true,
   enableSpotlight = true,
   enableBorderGlow = true,
@@ -494,11 +494,13 @@ const MagicBento = ({
   enableTilt = false,
   glowColor = DEFAULT_GLOW_COLOR,
   clickEffect = true,
-  enableMagnetism = true
+  enableMagnetism = true,
+  items = []
 }) => {
   const gridRef = useRef(null);
   const isMobile = useMobileDetection();
   const shouldDisableAnimations = disableAnimations || isMobile;
+  const displayItems = items.length > 0 ? items : defaultCardData;
 
   return (
     <>
@@ -522,33 +524,18 @@ const MagicBento = ({
             grid-template-columns: 1fr;
             width: 100%;
             margin: 0 auto;
-            padding: 1rem;
+            padding: 2rem;
           }
           
           @media (min-width: 600px) {
             .card-responsive {
-              grid-template-columns: repeat(3, 1fr);
+              grid-template-columns: repeat(2, 1fr);
             }
           }
           
           @media (min-width: 1024px) {
             .card-responsive {
-              grid-template-columns: repeat(4, 1fr);
-            }
-            
-            .card-responsive .card:nth-child(3) {
-              grid-column: span 2;
-              grid-row: span 2;
-            }
-            
-            .card-responsive .card:nth-child(4) {
-              grid-column: 1 / span 2;
-              grid-row: 2 / span 2;
-            }
-            
-            .card-responsive .card:nth-child(6) {
-              grid-column: 4;
-              grid-row: 3;
+              grid-template-columns: repeat(3, 1fr);
             }
           }
           
@@ -641,9 +628,10 @@ const MagicBento = ({
       )}
 
       <BentoCardGrid gridRef={gridRef}>
-        <div className="card-responsive grid gap-2">
-          {cardData.map((card, index) => {
-            const baseClassName = `card flex flex-col justify-between relative aspect-[4/3] min-h-[280px] w-full max-w-full p-6 rounded-[20px] border border-solid font-light overflow-hidden transition-colors duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
+        <div className="card-responsive grid gap-6">
+          {displayItems.map((card, index) => {
+            const isCreative = card.title === 'Creative Content Creator';
+            const baseClassName = `card flex flex-col justify-between relative min-h-[280px] w-full max-w-full p-8 rounded-none border border-solid font-normal overflow-hidden transition-all duration-500 ease-in-out hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] ${
               enableBorderGlow ? 'card--border-glow' : ''
             }`;
 
@@ -670,14 +658,14 @@ const MagicBento = ({
                   clickEffect={clickEffect}
                   enableMagnetism={enableMagnetism}
                 >
-                  <div className="card__header flex justify-between gap-3 relative text-white">
-                    <span className="card__label text-lg">{card.label}</span>
-                  </div>
-                  <div className="card__content flex flex-col relative text-white">
-                    <h3 className={`card__title font-normal text-lg m-0 mb-2 ${textAutoHide ? 'text-clamp-1' : ''}`}>
+                  <div className="card__header flex flex-col gap-3 relative text-white">
+                    <h3 className={`card__title font-bold text-2xl md:text-3xl m-0 tracking-tight leading-tight ${textAutoHide ? 'text-clamp-1' : ''}`}>
                       {card.title}
                     </h3>
-                    <p className={`card__description text-sm leading-6 opacity-90 ${textAutoHide ? 'text-clamp-2' : ''}`}>
+                    <span className="card__label text-xs font-black uppercase tracking-[0.25em] text-white/40">{card.label}</span>
+                  </div>
+                  <div className="card__content flex flex-col relative text-white mt-auto">
+                    <p className={`card__description text-base md:text-lg leading-relaxed opacity-80 font-normal ${textAutoHide ? 'text-clamp-2' : ''}`}>
                       {card.description}
                     </p>
                   </div>
@@ -800,14 +788,21 @@ const MagicBento = ({
                   el.addEventListener('click', handleClick);
                 }}
               >
+                {isCreative && (
+                  <div className="absolute top-2 right-2 flex space-x-1">
+                    <img src="/react.svg" alt="React" className="h-5 w-5" />
+                    <img src="/nodejs.svg" alt="Node.js" className="h-5 w-5" />
+                    <img src="/javascript.svg" alt="JavaScript" className="h-5 w-5" />
+                  </div>
+                )}
                 <div className="card__header flex justify-between gap-3 relative text-white">
                   <span className="card__label text-lg">{card.label}</span>
                 </div>
                 <div className="card__content flex flex-col relative text-white">
-                  <h3 className={`card__title font-normal text-lg m-0 mb-2 ${textAutoHide ? 'text-clamp-1' : ''}`}>
+                  <h3 className={`card__title font-normal ${isCreative ? 'text-sm' : 'text-lg'} m-0 mb-2 ${textAutoHide ? 'text-clamp-1' : ''}`}>
                     {card.title}
                   </h3>
-                  <p className={`card__description text-sm leading-6 opacity-90 ${textAutoHide ? 'text-clamp-2' : ''}`}>
+                  <p className={`card__description ${isCreative ? 'text-sm text-justify' : 'text-sm'} leading-6 opacity-90 ${textAutoHide ? 'text-clamp-2' : ''}`}>
                     {card.description}
                   </p>
                 </div>

@@ -50,6 +50,41 @@ function Nav() {
           />
         </div>
 
+        {/* Dark tint */}
+        <div className="absolute inset-0 z-[1] bg-[#05030a]/38" />
+
+        {/* Slight purple/blue tint */}
+        <div className="absolute inset-0 z-[2] bg-[linear-gradient(135deg,rgba(99,102,241,0.08),rgba(168,85,247,0.10),rgba(59,130,246,0.06))]" />
+
+        {/* Edge blur / fade */}
+        <div
+          className="absolute inset-0 z-[3] pointer-events-none"
+          style={{
+            boxShadow:
+              'inset 0 0 22.5px rgba(0,0,0,0.18), inset 0 0 52.5px rgba(0,0,0,0.22), inset 0 0 82.5px rgba(0,0,0,0.16)',
+            backdropFilter: 'blur(1.1px)',
+            WebkitBackdropFilter: 'blur(1.1px)',
+          }}
+        />
+
+        {/* Extra edge vignette */}
+        <div
+          className="absolute inset-0 z-[4] pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(circle at center, rgba(0,0,0,0) 48%, rgba(0,0,0,0.10) 72%, rgba(0,0,0,0.22) 100%)',
+          }}
+        />
+
+        {/* Inner border glow */}
+        <div
+          className="absolute inset-0 z-[5] pointer-events-none"
+          style={{
+            boxShadow:
+              'inset 0 0 0 1px rgba(168,85,247,0.14), inset 0 0 0 2px rgba(255,255,255,0.02)',
+          }}
+        />
+
         {/* Logo and Audio Visualizer Top */}
         <div className="relative z-20 flex flex-col items-center gap-6">
           {/* Logo Top with BorderGlow */}
@@ -100,8 +135,57 @@ function Nav() {
       </nav>
 
       {/* Mobile Top Bar */}
-      <nav className="md:hidden fixed top-0 left-0 right-0 z-50 bg-black border-b border-white/10">
-        <div className="px-6 py-4">
+      <nav className="md:hidden fixed top-0 left-0 right-0 z-50 bg-black border-b border-white/10 overflow-hidden">
+        {/* Dither Background */}
+        <div className="absolute inset-0 z-0">
+          <Dither
+            waveSpeed={0.05}
+            waveFrequency={3}
+            waveAmplitude={0.3}
+            waveColor={[0.3, 0.3, 0.4]}
+            colorNum={4}
+            pixelSize={2}
+            enableMouseInteraction={false}
+            mouseRadius={1}
+          />
+        </div>
+
+        {/* Dark tint */}
+        <div className="absolute inset-0 z-[1] bg-[#05030a]/38" />
+
+        {/* Slight purple/blue tint */}
+        <div className="absolute inset-0 z-[2] bg-[linear-gradient(135deg,rgba(99,102,241,0.08),rgba(168,85,247,0.10),rgba(59,130,246,0.06))]" />
+
+        {/* Edge blur / fade */}
+        <div
+          className="absolute inset-0 z-[3] pointer-events-none"
+          style={{
+            boxShadow:
+              'inset 0 0 22.5px rgba(0,0,0,0.18), inset 0 0 52.5px rgba(0,0,0,0.22), inset 0 0 82.5px rgba(0,0,0,0.16)',
+            backdropFilter: 'blur(1.1px)',
+            WebkitBackdropFilter: 'blur(1.1px)',
+          }}
+        />
+
+        {/* Extra edge vignette */}
+        <div
+          className="absolute inset-0 z-[4] pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(circle at center, rgba(0,0,0,0) 48%, rgba(0,0,0,0.10) 72%, rgba(0,0,0,0.22) 100%)',
+          }}
+        />
+
+        {/* Inner border glow */}
+        <div
+          className="absolute inset-0 z-[5] pointer-events-none"
+          style={{
+            boxShadow:
+              'inset 0 0 0 1px rgba(168,85,247,0.14), inset 0 0 0 2px rgba(255,255,255,0.02)',
+          }}
+        />
+        
+        <div className="px-6 py-4 relative z-10">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <a href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className="hover:opacity-80 transition-opacity duration-300">

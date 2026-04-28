@@ -57,8 +57,8 @@ function Hero() {
         transition: 'all 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
-      {/* Video Background */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      {/* RippleGrid Background */}
+      <div className="absolute inset-0 z-1 overflow-hidden">
         <video autoPlay loop muted playsInline className="w-full h-full object-cover grayscale">
           <source src={`${import.meta.env.BASE_URL}banner.mp4`} type="video/mp4" />
         </video>
