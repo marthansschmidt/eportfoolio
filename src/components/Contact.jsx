@@ -5,6 +5,14 @@ import Dither from './Dither'
 function Contact() {
   const sectionRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: ''
+  })
+  const [submitted, setSubmitted] = useState(false)
+  const [showPopup, setShowPopup] = useState(false)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -23,8 +31,30 @@ function Contact() {
     return () => observer.disconnect()
   }, [])
 
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setSubmitted(true)
+    setFormData({ firstName: '', lastName: '', email: '', message: '' })
+    setTimeout(() => {
+      setSubmitted(false)
+      setShowPopup(true)
+    }, 2000)
+  }
+
+  const closePopup = () => {
+    setShowPopup(false)
+  }
+
   const techLogos = [
-    { src: `${import.meta.env.BASE_URL}vite.svg`, link: null },
+    { src: `${import.meta.env.BASE_URL}vite.svg`, link: 'mailto:mart.hansschmidt@voco.ee' },
     { src: `${import.meta.env.BASE_URL}linkedin.webp`, link: 'https://linkedin.com' },
     { src: `${import.meta.env.BASE_URL}spotify.png`, link: 'https://open.spotify.com/playlist/5Vn7Rk6XjJ8uoWHywlQUGr?si=64a9b813a79041af' },
     { src: `${import.meta.env.BASE_URL}github.png`, link: 'https://github.com/marthansschmidt' },
@@ -86,15 +116,113 @@ function Contact() {
         </div>
       </div>
 
-      {/* --- TEKST JA CTA (See osa oli puudu) --- */}
-      <div className="flex flex-col items-center text-center px-6 max-w-3xl z-20">
-        <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">
-          puudub
-        </h3>
+      {/* --- CONTACT FORM SECTION --- */}
+      <div className="flex-1 flex items-center justify-center w-full px-6 z-20">
+        <style>{`
+          @keyframes spin {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(360deg);
+            }
+          }
+          .loading-spinner {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+          }
+        `}</style>
+        <div className="w-full max-w-2xl">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Name Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-lg font-semibold text-white mb-2" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+                  First Name <span className="text-purple-400">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  required
+                  placeholder="Your first name"
+                  className="w-full px-4 py-3 bg-[#0f0b1a] border border-[#7c3aed]/50 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 transition-all"
+                  style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+                />
+              </div>
+              <div>
+                <label className="block text-lg font-semibold text-white mb-2" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+                  Last Name <span className="text-purple-400">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  required
+                  placeholder="Your last name"
+                  className="w-full px-4 py-3 bg-[#0f0b1a] border border-[#7c3aed]/50 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 transition-all"
+                  style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+                />
+              </div>
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="block text-lg font-semibold text-white mb-2" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+                Email <span className="text-purple-400">*</span>
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                placeholder="your.email@example.com"
+                className="w-full px-4 py-3 bg-[#0f0b1a] border border-[#7c3aed]/50 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 transition-all"
+                style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+              />
+            </div>
+
+            {/* Message */}
+            <div>
+              <label className="block text-lg font-semibold text-white mb-2" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+                Message <span className="text-purple-400">*</span>
+              </label>
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+                placeholder="Your message here..."
+                rows="5"
+                className="w-full px-4 py-3 bg-[#0f0b1a] border border-[#7c3aed]/50 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 transition-all resize-none"
+                style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+              />
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full px-8 py-5 text-lg font-bold rounded-lg transition-all duration-300 uppercase tracking-wider mb-8 flex items-center justify-center gap-3 bg-purple-900 hover:bg-purple-950 cursor-pointer text-white"
+              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+            >
+              {submitted ? (
+                <>
+                  <span className="loading-spinner">⟳</span>
+                  Submitted!
+                </>
+              ) : (
+                'Submit'
+              )}
+            </button>
+          </form>
+        </div>
       </div>
 
       {/* --- LOGO LOOP SECTION --- */}
-      <div className="w-full overflow-hidden opacity-60 hover:opacity-100 transition-opacity duration-500 py-8">
+      <div className="w-full overflow-hidden opacity-60 hover:opacity-100 transition-opacity duration-500 py-8 z-20">
         <LogoLoop
           logos={techLogos}
           speed={15}
@@ -103,6 +231,43 @@ function Contact() {
           direction="right"
         />
       </div>
+
+      {/* --- SUCCESS POPUP --- */}
+      {showPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backdropFilter: 'blur(4px)' }}>
+          <div 
+            className="bg-[#0f0b1a] border-2 border-purple-600 rounded-xl p-8 max-w-md mx-4 shadow-2xl animate-fadeIn"
+            style={{
+              animation: 'fadeInScale 0.4s ease-out',
+              boxShadow: '0 0 60px rgba(168, 85, 247, 0.5)'
+            }}
+          >
+            <style>{`
+              @keyframes fadeInScale {
+                from {
+                  opacity: 0;
+                  transform: scale(0.9);
+                }
+                to {
+                  opacity: 1;
+                  transform: scale(1);
+                }
+              }
+            `}</style>
+            
+            <h3 className="text-2xl font-bold text-white text-center mb-6" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+              Message Sent!
+            </h3>
+            <button
+              onClick={closePopup}
+              className="w-full px-6 py-2 bg-purple-900 hover:bg-purple-950 text-white font-bold rounded-lg transition-all duration-300"
+              style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

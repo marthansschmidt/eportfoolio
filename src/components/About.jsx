@@ -1,7 +1,7 @@
 import MagicBento from './MagicBento'
-import Cubes from './Cubes'
 import ShapeGrid from './ShapeGrid'
 import Dither from './Dither'
+import Cubes from '../component/Cubes'
 
 function About() {
   const aboutItems = [
@@ -24,10 +24,9 @@ function About() {
       description: (
         <div className="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden">
           <Cubes
-            interactive={true}
-            color='#6366f1'
-            size={300}
-            speed={0.5}
+            radius={1}
+            gridSize={6}
+            autoAnimate={false}
           />
         </div>
       ),
