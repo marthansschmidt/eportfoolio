@@ -132,10 +132,10 @@ function Contact() {
             animation: spin 1s linear infinite;
           }
         `}</style>
-        <div className="w-full max-w-2xl">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="w-full max-w-2xl px-2 sm:px-0">
+          <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
             {/* Name Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label className="block text-lg font-semibold text-white mb-2" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
                   First Name <span className="text-purple-400">*</span>
