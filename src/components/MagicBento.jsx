@@ -665,9 +665,9 @@ const MagicBento = ({
                     <span className="card__label text-xs font-black uppercase tracking-[0.25em] text-white/40">{card.label}</span>
                   </div>
                   <div className="card__content flex flex-col relative text-white mt-auto">
-                    <p className={`card__description text-base md:text-lg leading-relaxed opacity-80 font-normal ${textAutoHide ? 'text-clamp-2' : ''}`}>
+                    <div className={`card__description text-base md:text-lg leading-relaxed opacity-80 font-normal ${textAutoHide ? 'text-clamp-2' : ''}`}>
                       {card.description}
-                    </p>
+                    </div>
                   </div>
                 </ParticleCard>
               );
@@ -802,9 +802,9 @@ const MagicBento = ({
                   <h3 className={`card__title font-normal ${isCreative ? 'text-sm' : 'text-lg'} m-0 mb-2 ${textAutoHide ? 'text-clamp-1' : ''}`}>
                     {card.title}
                   </h3>
-                  <p className={`card__description ${isCreative ? 'text-sm text-justify' : 'text-sm'} leading-6 opacity-90 ${textAutoHide ? 'text-clamp-2' : ''}`}>
+                  <div className={`card__description ${isCreative ? 'text-sm text-justify' : 'text-sm'} leading-6 opacity-90 ${textAutoHide ? 'text-clamp-2' : ''}`}>
                     {card.description}
-                  </p>
+                  </div>
                 </div>
               </div>
             );

@@ -1,6 +1,5 @@
 import TextPressure from './TextPressure'
-import Dither from './Dither'
-import RoleRotator from './RoleRotator'
+import DeferredDither from './DeferredDither'
 import ProfileCard from './ProfileCard'
 import { useEffect, useRef, useState } from 'react'
 
@@ -9,6 +8,7 @@ function Hero() {
   const [isVisible, setIsVisible] = useState(false)
   const [textReady, setTextReady] = useState(false)
   const [textKey, setTextKey] = useState(0)
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -34,6 +34,7 @@ function Hero() {
     }, 80)
 
     const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
       setTextKey((prev) => prev + 1)
     }
 
@@ -49,7 +50,7 @@ function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative w-screen h-screen flex items-center justify-center overflow-hidden flex-shrink-0"
+      className="relative w-screen md:h-screen h-screen flex items-center justify-start md:justify-center flex-shrink-0 md:flex-shrink-0 py-0 md:py-0"
       style={{
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(18px)',
@@ -86,27 +87,34 @@ function Hero() {
         />
       </div>
 
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 py-12">
-        <div className="relative w-full flex flex-col items-center justify-center">
+      <div className="relative z-10 w-full md:w-[calc(100vw-176px)] md:ml-[176px] h-full flex flex-col items-center justify-start md:justify-center px-4 sm:px-6 pt-32 pb-8 md:py-12">
+        <div className="relative w-full flex flex-col items-center justify-start md:justify-center mt-0 md:mt-0">
           {/* MHX box */}
           <div className="relative flex items-center justify-center w-full">
-            <div className="relative w-[80vw] max-w-[1200px] h-[20vh] max-h-[180px] min-h-[120px] rounded-none overflow-hidden border border-[#7c3aed]/30 shadow-[0_0_60px_rgba(76,29,149,0.18)]">
+            <div className="relative w-full max-w-[1100px] h-[112px] sm:h-[140px] rounded-none overflow-visible border border-[#7c3aed]/50 mx-auto flex-shrink-0" style={{
+              boxShadow: `0 0 40px rgba(169, 85, 247, 0.4),
+                          0 0 80px rgba(169, 85, 247, 0.25),
+                          0 0 120px rgba(124, 58, 237, 0.15),
+                          inset 0 0 60px rgba(169, 85, 247, 0.1)`
+            }}>
               {/* Dither background */}
-              <div className="absolute inset-0 z-0">
-                <Dither
-                  waveSpeed={0.05}
-                  waveFrequency={3}
-                  waveAmplitude={0.3}
-                  waveColor={[0.3, 0.3, 0.4]}
-                  colorNum={4}
-                  pixelSize={2}
-                  enableMouseInteraction={false}
-                  mouseRadius={1}
-                />
+              <div className="absolute inset-0 z-0 overflow-hidden">
+                <div className="absolute inset-y-0 left-1/2 w-[125%] -translate-x-1/2">
+                  <DeferredDither
+                    waveSpeed={0.05}
+                    waveFrequency={3}
+                    waveAmplitude={0.3}
+                    waveColor={[0.3, 0.3, 0.4]}
+                    colorNum={4}
+                    pixelSize={2}
+                    enableMouseInteraction={false}
+                    mouseRadius={1}
+                  />
+                </div>
               </div>
 
               {/* Dark tint */}
-              <div className="absolute inset-0 z-[1] bg-[#05030a]/38" />
+              <div className="absolute inset-0 z-[1] bg-[#05030a]/40" />
 
               {/* Slight purple/blue tint tied to navbar */}
               <div className="absolute inset-0 z-[2] bg-[linear-gradient(135deg,rgba(99,102,241,0.08),rgba(168,85,247,0.10),rgba(59,130,246,0.06))]" />
@@ -142,21 +150,23 @@ function Hero() {
 
               {/* MHX */}
               <div className="relative z-10 w-full h-full flex items-center justify-center overflow-hidden">
-                <div className="w-[90%] h-[85%] px-[1%] flex items-center justify-center overflow-hidden">
+                <div className="w-full h-[68%] flex items-center justify-center overflow-hidden px-8 sm:px-10 md:px-[6%]">
                   {textReady && (
                     <TextPressure
                       key={textKey}
                       text="MHX"
-                      flex={true}
+                      flex={false}
                       alpha={false}
                       stroke={false}
                       width={false}
-                      weight={true}
+                      weight={false}
                       italic={true}
-                      textColor="#a955f77c"
-                      strokeColor="#a955f77c"
-                      minFontSize={100}
+                      textColor="#8b5cf6e8"
+                      strokeColor="#8b5cf6e8"
+                      minFontSize={80}
+                      maxFontSize={isMobile ? 108 : 150}
                       scale={true}
+                      className="flex w-full h-full items-center justify-center gap-[clamp(1.6rem,5.2vw,4.2rem)]"
                     />
                   )}
                 </div>
@@ -164,12 +174,11 @@ function Hero() {
             </div>
           </div>
 
-          {/* ProfileCard */}
-          <div className="mt-12 md:mt-20 flex items-center justify-center px-4 w-full h-auto">
-            <div style={{ width: '100%', maxWidth: '720px', minHeight: '550px' }}>
+            <div className="mt-16 md:mt-20 lg:mt-24 flex items-center justify-center px-4 w-full h-auto">
+            <div className="w-full max-w-[340px] sm:max-w-[360px] lg:max-w-[620px] xl:max-w-[660px] min-h-[340px] sm:min-h-[360px] flex items-center justify-center mx-auto">
               <ProfileCard
-                avatarUrl={`${import.meta.env.BASE_URL}Mart_Hans.png`}
-                miniAvatarUrl={`${import.meta.env.BASE_URL}Mart_Hans.png`}
+                avatarUrl={`${import.meta.env.BASE_URL}Mart_Hans_660.jpg`}
+                miniAvatarUrl={`${import.meta.env.BASE_URL}Mart_Hans_660.jpg`}
                 name="Märt Hansschmidt"
                 title="Junior Developer"
                 handle="mhx"

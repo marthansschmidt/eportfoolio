@@ -12,13 +12,15 @@
   width: fit-content;
   animation: logo-scroll var(--animation-duration, 20s) linear infinite;
   animation-direction: var(--animation-direction, normal);
-  gap: var(--gap, 70px);
+  gap: 0;
+  will-change: transform;
 }
 
 .logo-loop-set {
   display: flex;
   gap: var(--gap, 70px);
   flex-shrink: 0;
+  padding-right: var(--gap, 70px);
 }
 
 .logo-loop-item {
@@ -39,10 +41,10 @@
 
 @keyframes logo-scroll {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(calc(-100% / 2));
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
