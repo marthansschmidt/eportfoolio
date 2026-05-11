@@ -438,7 +438,7 @@ function About() {
           
           {/* Pildi osa - lg:mt-10 nihutab pilti allapoole */}
           <div className="w-full lg:flex-1 flex justify-center lg:justify-end order-2 min-w-0">
-            <div className="relative w-full max-w-[480px] h-[360px] sm:h-[460px] lg:h-full lg:max-h-full overflow-hidden border border-purple-500/10 rounded-[28px] sm:rounded-[40px] shadow-2xl flex-shrink-0">
+            <div className="relative w-full max-w-[480px] h-[360px] sm:h-[460px] lg:h-full lg:max-h-full overflow-hidden border border-purple-500/10 rounded-none shadow-2xl flex-shrink-0">
               <img
                 src={`${import.meta.env.BASE_URL}mjaaartyeees_640.jpg`}
                 alt="Märt"
