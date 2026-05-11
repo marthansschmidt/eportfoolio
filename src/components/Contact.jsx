@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import LogoLoop from './LogoLoop'
-import Dither from './Dither'
+import DeferredDither from './DeferredDither'
 
 function Contact() {
   const sectionRef = useRef(null)
@@ -74,6 +74,35 @@ function Contact() {
         transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
       }}
     >
+      <div className="hidden md:block absolute inset-0 z-0 overflow-hidden">
+        <video
+          src={`${import.meta.env.BASE_URL}banner.mp4`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover grayscale"
+        />
+        <div className="absolute inset-0 bg-black/60" />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `
+              radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.22) 62%, rgba(0,0,0,0.52) 80%, rgba(0,0,0,0.88) 100%),
+              linear-gradient(to top, rgba(0,0,0,0.76), transparent 24%, transparent 76%, rgba(0,0,0,0.64)),
+              linear-gradient(to right, rgba(0,0,0,0.68), transparent 16%, transparent 84%, rgba(0,0,0,0.68))
+            `,
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+          }}
+        />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            boxShadow: 'inset 0 0 105px rgba(0,0,0,0.92)',
+          }}
+        />
+      </div>
       <style>{`
         @media (min-width: 768px) {
           #contact .contact-content-frame {
@@ -82,10 +111,59 @@ function Contact() {
             padding: 0 24px;
           }
         }
+
+        @media (min-width: 768px) and (max-height: 850px) {
+          #contact {
+            padding-top: 2.5rem;
+            padding-bottom: 1.5rem;
+          }
+
+          #contact .contact-heading {
+            height: 112px;
+          }
+
+          #contact .contact-form-wrap {
+            margin-top: 1.5rem;
+            align-items: flex-start;
+          }
+
+          #contact form {
+            row-gap: 1rem;
+          }
+
+          #contact label {
+            margin-bottom: 0.45rem;
+            font-size: 1.05rem;
+          }
+
+          #contact input {
+            padding-top: 0.85rem;
+            padding-bottom: 0.85rem;
+            font-size: 1rem;
+          }
+
+          #contact textarea {
+            min-height: 128px;
+            padding-top: 0.85rem;
+            padding-bottom: 0.85rem;
+            font-size: 1rem;
+          }
+
+          #contact button[type="submit"] {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+          }
+
+          #contact .contact-logo-loop {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+          }
+        }
       `}</style>
-      <div className="contact-content-frame w-full flex flex-1 flex-col justify-between items-center">
+      <div className="contact-content-frame relative z-10 w-full flex flex-1 flex-col justify-between items-center">
       {/* --- TITLE BOX SECTION --- */}
-      <div className="relative w-full max-w-[1100px] h-[112px] sm:h-[140px] rounded-none overflow-visible border border-[#7c3aed]/50 mx-auto flex-shrink-0" style={{
+      <div className="contact-heading relative w-full max-w-[1100px] h-[112px] sm:h-[140px] rounded-none overflow-visible border border-[#7c3aed]/50 mx-auto flex-shrink-0" style={{
         boxShadow: `0 0 40px rgba(169, 85, 247, 0.4),
                     0 0 80px rgba(169, 85, 247, 0.25),
                     0 0 120px rgba(124, 58, 237, 0.15),
@@ -94,7 +172,7 @@ function Contact() {
         {/* Dither background layer */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           <div className="absolute inset-y-0 left-1/2 w-[125%] -translate-x-1/2">
-            <Dither
+            <DeferredDither
               waveSpeed={0.05}
               waveFrequency={3}
               waveAmplitude={0.3}
@@ -145,7 +223,7 @@ function Contact() {
       </div>
 
       {/* --- CONTACT FORM SECTION --- */}
-      <div className="flex-1 flex items-center justify-center w-full px-6 z-20 mt-8 sm:mt-10 lg:mt-0">
+      <div className="contact-form-wrap flex-1 flex items-center justify-center w-full px-6 z-20 mt-8 sm:mt-10 lg:mt-0">
         <style>{`
           @keyframes spin {
             from {
@@ -254,7 +332,8 @@ function Contact() {
       </div>
 
       {/* --- LOGO LOOP SECTION --- */}
-      <div className="relative w-[calc(100%+2rem)] -mx-4 sm:w-[calc(100%+3rem)] sm:-mx-6 md:w-screen md:mx-0 md:-ml-[176px] overflow-hidden opacity-60 hover:opacity-100 transition-opacity duration-500 pt-14 pb-8 sm:pt-16 lg:py-8 z-20">
+      <div className="contact-logo-loop relative w-[calc(100%+2rem)] -mx-4 sm:w-[calc(100%+3rem)] sm:-mx-6 md:w-screen md:mx-0 md:-ml-[176px] overflow-hidden opacity-90 hover:opacity-100 transition-opacity duration-500 pt-14 pb-8 sm:pt-16 lg:py-8 z-20">
+        <div className="absolute inset-0 bg-black/88 backdrop-blur-sm border-y border-purple-500/10 pointer-events-none" />
         <LogoLoop
           logos={techLogos}
           speed={15}

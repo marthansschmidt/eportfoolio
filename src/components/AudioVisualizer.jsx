@@ -3,6 +3,9 @@ import * as THREE from 'three';
 import { createNoise3D } from 'simplex-noise';
 import './AudioVisualizer.css';
 
+const DEFAULT_VOLUME = 0.5;
+const OUTPUT_VOLUME_SCALE = 0.2;
+
 export default function AudioVisualizer({ className = '', defaultAudio, onPlayStateChange }) {
   // Use muusika.mp3 as default if none provided, adding a stable timestamp (per-mount) to bypass cache
   const audioSrc = useMemo(() => {
@@ -12,7 +15,7 @@ export default function AudioVisualizer({ className = '', defaultAudio, onPlaySt
   const audioRef = useRef(null);
   const analyserRef = useRef(null);
   const contextRef = useRef(null);
-  const [volume, setVolume] = useState(0.2);
+  const [volume, setVolume] = useState(DEFAULT_VOLUME);
   const [isPlaying, setIsPlaying] = useState(false);
 
   // Initialize audio element on mount for pre-loading
@@ -20,7 +23,7 @@ export default function AudioVisualizer({ className = '', defaultAudio, onPlaySt
     if (!audioSrc) return;
     
     const audio = new Audio(audioSrc);
-    audio.volume = volume;
+    audio.volume = volume * OUTPUT_VOLUME_SCALE;
     audio.preload = 'auto';
     audio.crossOrigin = 'anonymous';
     audioRef.current = audio;
@@ -66,7 +69,7 @@ export default function AudioVisualizer({ className = '', defaultAudio, onPlaySt
   // Handle volume change
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = volume;
+      audioRef.current.volume = volume * OUTPUT_VOLUME_SCALE;
     }
   }, [volume]);
 

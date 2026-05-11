@@ -55,6 +55,7 @@ function Nav({ onNavigate, currentPage }) {
               pixelSize={2}
               enableMouseInteraction={false}
               mouseRadius={1}
+              instant={currentPage !== 0}
             />
           </div>
         </div>
@@ -174,6 +175,7 @@ function Nav({ onNavigate, currentPage }) {
               pixelSize={2}
               enableMouseInteraction={false}
               mouseRadius={1}
+              instant={currentPage !== 0}
             />
           </div>
         </div>

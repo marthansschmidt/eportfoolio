@@ -1,8 +1,8 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
 
-const Dither = lazy(() => import('./Dither'))
+const DarkVeil = lazy(() => import('./DarkVeil'))
 
-function DeferredDither(props) {
+function DeferredDarkVeil(props) {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
 
   useEffect(() => {
@@ -17,19 +17,17 @@ function DeferredDither(props) {
         className="w-full h-full"
         style={{
           background:
-            'radial-gradient(circle at 50% 45%, rgba(139, 92, 246, 0.2), transparent 38%), linear-gradient(135deg, rgba(19, 15, 28, 0.98), rgba(5, 3, 10, 0.98))',
+            'radial-gradient(circle at 50% 35%, rgba(124, 58, 237, 0.24), transparent 42%), linear-gradient(180deg, #0f0b1a 0%, #05030a 100%)',
         }}
       />
     )
   }
 
   return (
-    <Suspense fallback={<div className="w-full h-full bg-[#05030a]" />}>
-      <div className="w-full h-full">
-        <Dither {...props} />
-      </div>
+    <Suspense fallback={<div className="w-full h-full bg-[#0f0b1a]" />}>
+      <DarkVeil {...props} />
     </Suspense>
   )
 }
 
-export default DeferredDither
+export default DeferredDarkVeil

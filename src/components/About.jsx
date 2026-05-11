@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import MagicBento from './MagicBento'
 import ShapeGrid from './ShapeGrid'
-import Dither from './Dither'
+import DeferredDither from './DeferredDither'
 import Cubes from './Cubes'
 
 function About() {
@@ -34,7 +34,7 @@ function About() {
     },
     {
       description: (
-        <div className="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 w-full h-full flex items-center justify-center overflow-visible">
           <div className="about-cubes-wrap flex items-center justify-center">
             <Cubes
               radius={1}
@@ -65,6 +65,10 @@ function About() {
     }
   ];
 
+  const visibleAboutItems = isMobile
+    ? aboutItems.filter((_, index) => index !== 3)
+    : aboutItems
+
   return (
     <>
       <style>
@@ -80,19 +84,6 @@ function About() {
             flex-shrink: 0;
           }
           
-          /* Creative kasti (4. element) eriseadistus, et Cubes täidaks kasti ja pealkiri jääks peale */
-          #about .card:nth-child(4) .card__content {
-             position: absolute;
-             inset: 0;
-             width: 100%;
-             height: 100%;
-             padding: 0;
-             margin: 0;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-          }
-
           #about .about-cubes-wrap {
             width: min(58%, calc(100% - 4rem));
             max-width: 230px;
@@ -101,6 +92,8 @@ function About() {
 
           #about .about-cubes-wrap .default-animation {
             width: 100%;
+            padding: 18px;
+            overflow: visible;
           }
 
           #about .card__header {
@@ -155,6 +148,19 @@ function About() {
           }
 
           @media (min-width: 768px) {
+            /* Cubes-kaart on desktopis 4. element; mobiilis on see eemaldatud. */
+            #about .card:nth-child(4) .card__content {
+               position: absolute;
+               inset: 0;
+               width: 100%;
+               height: 100%;
+               padding: 0;
+               margin: 0;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+            }
+
             #about .about-content {
               width: calc(100vw - 176px);
               max-width: none;
@@ -200,6 +206,10 @@ function About() {
               max-width: 190px;
             }
 
+            #about .about-cubes-wrap .default-animation {
+              padding: 20px;
+            }
+
             #about .card__title {
               font-size: 2rem;
             }
@@ -212,6 +222,44 @@ function About() {
             #about .about-stack-list {
               font-size: 1.18rem;
               gap: 0.45rem;
+            }
+          }
+
+          @media (min-width: 768px) and (max-height: 850px) {
+            #about .about-content {
+              padding-top: 2.5rem;
+              padding-bottom: 2.5rem;
+            }
+
+            #about .about-heading {
+              height: 112px;
+            }
+
+            #about .about-main {
+              margin-top: 1.75rem;
+              gap: 1.25rem;
+            }
+
+            #about .card-responsive {
+              gap: 1rem;
+            }
+
+            #about .card {
+              padding: 1.25rem 1.5rem;
+            }
+
+            #about .card__header {
+              margin-bottom: 0.8rem;
+            }
+
+            #about .card__title {
+              font-size: 1.55rem;
+            }
+
+            #about .card__description,
+            #about .about-stack-list {
+              font-size: 1rem;
+              line-height: 1.42;
             }
           }
 
@@ -233,8 +281,17 @@ function About() {
 
             #about .about-cubes-wrap {
               width: auto;
-              height: min(calc(100% - 3rem), 132px);
-              max-width: 132px;
+              height: min(calc(100% - 1.25rem), 160px);
+              max-width: 160px;
+            }
+
+            #about .about-cubes-wrap .default-animation {
+              padding: 26px;
+            }
+
+            #about .about-cubes-wrap .default-animation--scene {
+              transform: translateY(18px) scale(0.78);
+              transform-origin: center;
             }
 
             #about .card__description {
@@ -263,17 +320,19 @@ function About() {
       />
 
       {/* 2. ShapeGrid */}
-      <div className="absolute inset-0 z-[1] pointer-events-none" style={{ opacity: 0.5 }}>
-        <ShapeGrid
-          direction="up"
-          speed={0.25}
-          borderColor="#a490c9"
-          squareSize={isMobile ? 38 : 55}
-          hoverFillColor="#7c3aed"
-          shape="hexagon"
-          hoverTrailAmount={0}
-        />
-      </div>
+      {!isMobile && (
+        <div className="absolute inset-0 z-[1] pointer-events-none" style={{ opacity: 0.5 }}>
+          <ShapeGrid
+            direction="up"
+            speed={0.25}
+            borderColor="#a490c9"
+            squareSize={55}
+            hoverFillColor="#7c3aed"
+            shape="hexagon"
+            hoverTrailAmount={0}
+          />
+        </div>
+      )}
 
       {/* 3. Dünaamiline Blur - Ainult äärtes */}
       <div
@@ -298,7 +357,7 @@ function About() {
       <div className="about-content relative z-10 flex flex-col items-center w-full max-w-[1400px] min-h-screen lg:min-h-0 lg:h-full">
         
         {/* Title Box - Same style as Hero MHX */}
-        <div className="relative w-full max-w-[1100px] h-[112px] sm:h-[140px] rounded-none overflow-visible border border-[#7c3aed]/50 mx-auto flex-shrink-0" style={{
+        <div className="about-heading relative w-full max-w-[1100px] h-[112px] sm:h-[140px] rounded-none overflow-visible border border-[#7c3aed]/50 mx-auto flex-shrink-0" style={{
           boxShadow: `0 0 40px rgba(169, 85, 247, 0.4),
                       0 0 80px rgba(169, 85, 247, 0.25),
                       0 0 120px rgba(124, 58, 237, 0.15),
@@ -307,7 +366,7 @@ function About() {
           {/* Dither background */}
           <div className="absolute inset-0 z-0 overflow-hidden">
             <div className="absolute inset-y-0 left-1/2 w-[125%] -translate-x-1/2">
-              <Dither
+              <DeferredDither
                 waveSpeed={0.05}
                 waveFrequency={3}
                 waveAmplitude={0.3}
@@ -370,7 +429,7 @@ function About() {
           <div className="w-full lg:flex-[2] min-w-0 order-1">
             <div className="about-bento-wrap w-full max-w-[420px] sm:max-w-[500px] md:max-w-[900px] lg:max-w-none mx-auto">
               <MagicBento
-                items={aboutItems}
+                items={visibleAboutItems}
                 spotlightRadius={300}
                 className="grid-cols-1 md:grid-cols-2 gap-5"
               />
@@ -385,7 +444,7 @@ function About() {
                 alt="Märt"
                 width="480"
                 height="640"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 className="w-full h-full object-cover object-[center_18%] hover:grayscale-0 transition-all duration-500"
               />

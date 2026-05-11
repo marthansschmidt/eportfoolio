@@ -1,6 +1,6 @@
 import Nav from './components/Nav'
 import Hero from './components/Hero'
-import { Suspense, lazy, useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
 
 const About = lazy(() => import('./components/About'))
 const Projects = lazy(() => import('./components/Projects'))
@@ -8,31 +8,102 @@ const Contact = lazy(() => import('./components/Contact'))
 
 function App() {
   const containerRef = useRef(null)
+  const currentPageRef = useRef(0)
+  const wheelLockRef = useRef(false)
+  const wheelDeltaRef = useRef(0)
+  const wheelReleaseTimerRef = useRef(null)
   const [currentPage, setCurrentPage] = useState(0)
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
-  const [loadedPages, setLoadedPages] = useState(() => new Set([0]))
+  const [canLoadBelowFold, setCanLoadBelowFold] = useState(() => window.innerWidth >= 768)
 
   const pages = ['hero', 'about', 'projects', 'contact']
 
+  const goToPage = useCallback((pageIndex) => {
+    if (pageIndex < 0 || pageIndex >= pages.length) return
+
+    currentPageRef.current = pageIndex
+    setCurrentPage(pageIndex)
+
+    if (isMobile) {
+      document.getElementById(pages[pageIndex])?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+      return
+    }
+
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        left: pageIndex * window.innerWidth,
+        behavior: 'smooth',
+      })
+    }
+  }, [isMobile, pages.length])
+
   const handleNavigation = (page) => {
     const pageIndex = pages.indexOf(page)
-    if (pageIndex !== -1) {
-      setCurrentPage(pageIndex)
-      setLoadedPages((prev) => new Set(prev).add(pageIndex))
-      if (!isMobile && containerRef.current) {
-        containerRef.current.scrollTo({
-          left: pageIndex * window.innerWidth,
-          behavior: 'smooth',
-        })
-      }
-    }
+    goToPage(pageIndex)
   }
+
+  useEffect(() => {
+    currentPageRef.current = currentPage
+  }, [currentPage])
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768)
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+
+  useEffect(() => {
+    if (!isMobile) {
+      setCanLoadBelowFold(true)
+      return undefined
+    }
+
+    const loadBelowFold = () => setCanLoadBelowFold(true)
+    const timeoutId = window.setTimeout(loadBelowFold, 5000)
+
+    window.addEventListener('scroll', loadBelowFold, { passive: true, once: true })
+    window.addEventListener('touchstart', loadBelowFold, { passive: true, once: true })
+
+    return () => {
+      window.clearTimeout(timeoutId)
+      window.removeEventListener('scroll', loadBelowFold)
+      window.removeEventListener('touchstart', loadBelowFold)
+    }
+  }, [isMobile])
+
+  useEffect(() => {
+    if (!isMobile) return undefined
+
+    let frameId = 0
+    const handleScroll = () => {
+      cancelAnimationFrame(frameId)
+      frameId = requestAnimationFrame(() => {
+        const pageIndex = pages.reduce((closestIndex, page, index) => {
+          const section = document.getElementById(page)
+          const closestSection = document.getElementById(pages[closestIndex])
+          if (!section || !closestSection) return closestIndex
+
+          return Math.abs(section.getBoundingClientRect().top) < Math.abs(closestSection.getBoundingClientRect().top)
+            ? index
+            : closestIndex
+        }, 0)
+
+        currentPageRef.current = pageIndex
+        setCurrentPage(pageIndex)
+      })
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+
+    return () => {
+      cancelAnimationFrame(frameId)
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [isMobile, pages.length])
 
   useEffect(() => {
     const container = containerRef.current
@@ -45,7 +116,6 @@ function App() {
         const pageIndex = Math.round(container.scrollLeft / window.innerWidth)
         if (pageIndex >= 0 && pageIndex < pages.length) {
           setCurrentPage(pageIndex)
-          setLoadedPages((prev) => new Set(prev).add(pageIndex))
         }
       })
     }
@@ -58,55 +128,127 @@ function App() {
     }
   }, [isMobile, pages.length])
 
-  const renderPage = (index, Component) => {
-    if (!loadedPages.has(index)) return null
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container || isMobile) return undefined
 
-    return (
-      <Suspense fallback={null}>
-        <Component />
-      </Suspense>
+    const releaseWheelLock = () => {
+      wheelLockRef.current = false
+      wheelDeltaRef.current = 0
+    }
+
+    const handleWheel = (event) => {
+      if (wheelLockRef.current) return
+
+      const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX
+      const activeSection = event.target.closest?.('.scroll-page')
+
+      if (activeSection && Math.abs(event.deltaY) >= Math.abs(event.deltaX)) {
+        const canScrollDown = event.deltaY > 0 && activeSection.scrollTop + activeSection.clientHeight < activeSection.scrollHeight - 2
+        const canScrollUp = event.deltaY < 0 && activeSection.scrollTop > 2
+
+        if (canScrollDown || canScrollUp) {
+          return
+        }
+      }
+
+      event.preventDefault()
+      wheelDeltaRef.current += delta
+
+      if (Math.abs(wheelDeltaRef.current) < 45) return
+
+      const direction = wheelDeltaRef.current > 0 ? 1 : -1
+      const nextPage = Math.max(0, Math.min(pages.length - 1, currentPageRef.current + direction))
+      wheelDeltaRef.current = 0
+
+      if (nextPage === currentPageRef.current) return
+
+      wheelLockRef.current = true
+      goToPage(nextPage)
+
+      if (wheelReleaseTimerRef.current) {
+        clearTimeout(wheelReleaseTimerRef.current)
+      }
+
+      wheelReleaseTimerRef.current = setTimeout(releaseWheelLock, 850)
+    }
+
+    container.addEventListener('wheel', handleWheel, { passive: false })
+
+    return () => {
+      container.removeEventListener('wheel', handleWheel)
+      if (wheelReleaseTimerRef.current) {
+        clearTimeout(wheelReleaseTimerRef.current)
+      }
+      releaseWheelLock()
+    }
+  }, [goToPage, isMobile, pages.length])
+
+  useEffect(() => {
+    if (!isMobile) return undefined
+
+    const sections = Array.from(document.querySelectorAll('.scroll-page'))
+    if (!sections.length) return undefined
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle('is-mobile-visible', entry.isIntersecting)
+        })
+      },
+      {
+        threshold: 0.08,
+        rootMargin: '0px 0px -42% 0px',
+      }
     )
-  }
+
+    sections.forEach((section, index) => {
+      if (index === 0) {
+        section.classList.add('is-mobile-visible')
+      }
+      observer.observe(section)
+    })
+
+    return () => {
+      observer.disconnect()
+      sections.forEach((section) => section.classList.remove('is-mobile-visible'))
+    }
+  }, [isMobile, canLoadBelowFold])
 
   return (
-    <div className="bg-black min-h-screen w-screen overflow-hidden relative text-white">
+    <div className="bg-black min-h-screen w-screen relative text-white">
       <style>{`
-        /* Lukusta body ja html scrollimist */
         html, body {
-          overflow: hidden;
-          height: 100%;
+          overflow-x: hidden;
+          overflow-y: auto;
+          min-height: 100%;
           width: 100%;
         }
 
-        /* KONTEINER */
         .scroll-container {
-          height: 100vh;
           width: 100vw;
-          overflow: hidden;
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
+          min-height: 100vh;
+          overflow: visible;
+          position: static;
         }
 
-        /* LIIKUMISE LOOGIKA */
         main {
           display: flex;
-          height: 100%;
+          flex-direction: column;
+          min-height: 100%;
           transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
           will-change: transform;
         }
 
-        /* IGA SEKTSION */
-        section {
+        .scroll-page {
           width: 100vw;
-          height: 100vh;
+          min-height: 100vh;
+          position: relative;
           flex-shrink: 0; 
-          overflow-y: auto; 
+          overflow-y: visible; 
           overflow-x: hidden;
           -webkit-overflow-scrolling: touch;
-          padding-top: 80px; 
+          padding-top: 0; 
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -114,12 +256,12 @@ function App() {
         }
 
         /* Peida scrollbar mobiilis */
-        section::-webkit-scrollbar {
+        .scroll-page::-webkit-scrollbar {
           display: none;
         }
 
         @supports (scrollbar-width: none) {
-          section {
+          .scroll-page {
             scrollbar-width: none;
           }
         }
@@ -146,6 +288,30 @@ function App() {
           padding-top: 0;
         }
 
+        @media (max-width: 767px) {
+          .scroll-page .inner-content {
+            opacity: 0;
+            transform: translateY(34px) scale(0.975);
+            transition:
+              opacity 620ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 680ms cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+          }
+
+          .scroll-page.is-mobile-visible .inner-content {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+          .scroll-page .inner-content {
+            opacity: 1;
+            transform: none;
+            transition: none;
+          }
+        }
+
         /* ÜHTLUSTATUD PEALKIRJA KASTID (About & Contact) */
         /* Lisa see klass oma About.jsx ja Contact.jsx pealkirja div-idele, 
            või kasuta seda globaalset stiili siin: */
@@ -165,22 +331,38 @@ function App() {
 
         @media (min-width: 768px) {
           html, body {
-            overflow: auto;
+            overflow: hidden;
+            height: 100%;
           }
 
           .scroll-container { 
+            height: 100vh;
+            overflow: hidden;
             overflow-x: auto;
-            position: static;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
           }
           
-          main { transform: none !important; }
-          section { 
-            padding-top: 0; 
-            justify-content: center;
-            overflow-y: visible;
+          main {
+            flex-direction: row;
+            height: 100%;
+            min-height: 0;
+            transform: none !important;
           }
 
-          section::-webkit-scrollbar {
+          .scroll-page { 
+            height: 100vh;
+            min-height: 0;
+            padding-top: 0; 
+            justify-content: center;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+          }
+
+          .scroll-page::-webkit-scrollbar {
             display: auto;
           }
         }
@@ -189,11 +371,13 @@ function App() {
       {/* TAUST - FIXED (püsib paigal sisu kerimisel) */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-black" />
-        <video
-          src={`${import.meta.env.BASE_URL}banner.mp4`}
-          autoPlay muted loop playsInline
-          className="w-full h-full object-cover opacity-40 blur-3xl"
-        />
+        {!isMobile && (
+          <video
+            src={`${import.meta.env.BASE_URL}banner.mp4`}
+            autoPlay muted loop playsInline
+            className="w-full h-full object-cover opacity-40 blur-3xl"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-90" />
       </div>
 
@@ -201,29 +385,41 @@ function App() {
       
       <div ref={containerRef} className="scroll-container">
         <main style={{ 
-          transform: isMobile ? `translateX(-${currentPage * 100}vw)` : 'none'
+          transform: 'none'
         }}>
-          <section id="hero" className="full-bleed-section">
+          <section id="hero" className="scroll-page full-bleed-section">
             <div className="inner-content full-bleed-content">
               <Hero />
             </div>
           </section>
           
-          <section id="about" className="full-bleed-section">
+          <section id="about" className="scroll-page full-bleed-section">
             <div className="inner-content full-bleed-content">
-              {renderPage(1, About)}
+              {canLoadBelowFold && (
+                <Suspense fallback={<div className="min-h-screen bg-[#0f0b1a]" />}>
+                  <About />
+                </Suspense>
+              )}
             </div>
           </section>
           
-          <section id="projects" className="full-bleed-section">
+          <section id="projects" className="scroll-page full-bleed-section">
             <div className="inner-content full-bleed-content">
-              {renderPage(2, Projects)}
+              {canLoadBelowFold && (
+                <Suspense fallback={<div className="min-h-screen bg-[#0f0b1a]" />}>
+                  <Projects />
+                </Suspense>
+              )}
             </div>
           </section>
           
-          <section id="contact" className="full-bleed-section">
+          <section id="contact" className="scroll-page full-bleed-section">
             <div className="inner-content full-bleed-content">
-              {renderPage(3, Contact)}
+              {canLoadBelowFold && (
+                <Suspense fallback={<div className="min-h-screen bg-[#05030a]" />}>
+                  <Contact />
+                </Suspense>
+              )}
             </div>
           </section>
         </main>

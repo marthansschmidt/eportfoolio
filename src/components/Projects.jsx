@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import Dither from './Dither'
-import DarkVeil from './DarkVeil'
+import DeferredDither from './DeferredDither'
+import DeferredDarkVeil from './DeferredDarkVeil'
 
 function Projects() {
   const sectionRef = useRef(null)
@@ -48,6 +48,7 @@ function Projects() {
       liveUrl: 'https://kristikliimannbeauty.onrender.com',
       type: 'website',
       video: `${import.meta.env.BASE_URL}projects/Kristi_preview.webm`,
+      previewImage: `${import.meta.env.BASE_URL}projects/makeup-kristi.png`,
       
     },
     {
@@ -58,6 +59,7 @@ function Projects() {
       liveUrl: 'https://suumadin.onrender.com',
       type: 'project',
       video: `${import.meta.env.BASE_URL}projects/suumadin_preview.webm`,
+      previewImage: `${import.meta.env.BASE_URL}projects/suumadin.png`,
       
     },
     {
@@ -68,6 +70,7 @@ function Projects() {
       liveUrl: 'https://reactaim3d.onrender.com',
       type: 'game',
       video: `${import.meta.env.BASE_URL}projects/react_aim_preview.webm`,
+      previewImage: `${import.meta.env.BASE_URL}projects/react-aim-3d.png`,
       
     },
     {
@@ -78,6 +81,7 @@ function Projects() {
       liveUrl: 'https://carmelestudios.onrender.com',
       type: 'website',
       video: `${import.meta.env.BASE_URL}projects/carmele_preview.webm`,
+      previewImage: `${import.meta.env.BASE_URL}projects/hobileht.png`,
     
     }
   ]
@@ -209,7 +213,7 @@ function Projects() {
     >
       {/* DarkVeil Background - Full width */}
       <div className="absolute inset-0 z-0 w-full h-full">
-        <DarkVeil
+        <DeferredDarkVeil
           hueShift={359}
           scanlineFrequency={0.5}
           scanlineIntensity={1}
@@ -266,6 +270,19 @@ function Projects() {
             width: 100%;
             height: 100%;
             border: none;
+            display: block;
+          }
+
+          .project-preview-mobile {
+            background:
+              radial-gradient(circle at 50% 40%, rgba(139, 92, 246, 0.24), transparent 48%),
+              linear-gradient(135deg, rgba(17, 12, 34, 1), rgba(5, 3, 10, 1));
+          }
+
+          .project-preview-mobile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: block;
           }
 
@@ -431,6 +448,45 @@ function Projects() {
             }
           }
 
+          @media (min-width: 768px) and (max-height: 850px) {
+            #projects {
+              padding-top: 2.5rem;
+              padding-bottom: 2.5rem;
+            }
+
+            #projects .projects-heading {
+              height: 112px;
+              margin-bottom: 2rem;
+            }
+
+            #projects .projects-carousel {
+              margin-top: 0;
+            }
+
+            .project-preview {
+              height: clamp(240px, 32vh, 300px);
+            }
+
+            .project-content {
+              padding: 16px;
+            }
+
+            .project-title {
+              font-size: 1.25rem;
+              margin-bottom: 6px;
+            }
+
+            .project-description {
+              font-size: 0.88rem;
+              line-height: 1.45;
+              margin-bottom: 10px;
+            }
+
+            .project-links {
+              padding-top: 10px;
+            }
+          }
+
           .projects-nav-button {
             position: relative;
             z-index: 50;
@@ -500,7 +556,7 @@ function Projects() {
 
       <div className="projects-content-frame relative z-20 w-full flex flex-col items-center">
       {/* Title Box */}
-      <div className="relative w-full max-w-[1100px] h-[112px] sm:h-[140px] rounded-none overflow-visible border border-[#7c3aed]/50 mx-auto flex-shrink-0 mb-20 md:mb-16 lg:mb-24 z-20" style={{
+      <div className="projects-heading relative w-full max-w-[1100px] h-[112px] sm:h-[140px] rounded-none overflow-visible border border-[#7c3aed]/50 mx-auto flex-shrink-0 mb-20 md:mb-16 lg:mb-24 z-20" style={{
         boxShadow: `0 0 40px rgba(169, 85, 247, 0.4),
                     0 0 80px rgba(169, 85, 247, 0.25),
                     0 0 120px rgba(124, 58, 237, 0.15),
@@ -508,7 +564,7 @@ function Projects() {
       }}>
         <div className="absolute inset-0 z-0 overflow-hidden">
           <div className="absolute inset-y-0 left-1/2 w-[125%] -translate-x-1/2">
-            <Dither
+            <DeferredDither
               waveSpeed={0.05}
               waveFrequency={3}
               waveAmplitude={0.3}
@@ -594,23 +650,36 @@ function Projects() {
                 className="project-preview cursor-pointer"
                 onClick={() => openProject(project.liveUrl)}
               >
-                <video
-                  ref={(el) => {
-                    if (el) {
-                      videoRefs.current[project.id] = el
-                    } else {
-                      delete videoRefs.current[project.id]
-                    }
-                  }}
-                  src={project.video}
-                  aria-label={project.title}
-                  className="w-full h-full object-cover"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                />
+                {isMobile ? (
+                  <div className="project-preview-mobile w-full h-full">
+                    <img
+                      src={project.previewImage}
+                      alt={`${project.title} preview`}
+                      width="800"
+                      height="450"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                ) : (
+                  <video
+                    ref={(el) => {
+                      if (el) {
+                        videoRefs.current[project.id] = el
+                      } else {
+                        delete videoRefs.current[project.id]
+                      }
+                    }}
+                    src={project.video}
+                    aria-label={project.title}
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                  />
+                )}
               </div>
 
               {/* Content Section */}

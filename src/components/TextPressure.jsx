@@ -60,7 +60,6 @@ const TextPressure = ({
   const [fontLoaded, setFontLoaded] = useState(false);
 
   const chars = text.split('');
-  const isInteractive = width || weight || alpha || invertWeightOnHover;
 
   // Font loading detection
   useEffect(() => {
@@ -84,8 +83,6 @@ const TextPressure = ({
   }, [fontFamily, fontUrl]);
 
   useEffect(() => {
-    if (!isInteractive) return undefined;
-
     const handleMouseMove = e => {
       cursorRef.current.x = e.clientX;
       cursorRef.current.y = e.clientY;
@@ -130,7 +127,7 @@ const TextPressure = ({
       container?.removeEventListener('mouseenter', handleMouseEnter);
       container?.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, [isInteractive]);
+  }, []);
 
   const setSize = useCallback(() => {
     if (!containerRef.current || !titleRef.current || !fontLoaded) return;
@@ -170,17 +167,6 @@ const TextPressure = ({
   useEffect(() => {
     if (!fontLoaded) return;
 
-    if (!isInteractive) {
-      spansRef.current.forEach(span => {
-        if (!span) return;
-        const staticFontVariationSettings = `'wght' 1000, 'wdth' 100, 'ital' ${italic ? 1 : 0}`;
-        if (span.style.fontVariationSettings !== staticFontVariationSettings) {
-          span.style.fontVariationSettings = staticFontVariationSettings;
-        }
-      });
-      return;
-    }
-
     let rafId;
     const animate = () => {
       const ease = isHoveringRef.current ? 18 : 42;
@@ -217,7 +203,7 @@ const TextPressure = ({
                   ? Math.min(900, rawWeight)
                   : 900
               : rawWeight
-            : 1000;
+            : 400;
           const italVal = italic ? getAttr(d, maxDist, 0, 1).toFixed(2) : 0;
           const alphaVal = alpha ? getAttr(d, maxDist, 0, 1).toFixed(2) : 1;
 
@@ -237,7 +223,7 @@ const TextPressure = ({
 
     animate();
     return () => cancelAnimationFrame(rafId);
-  }, [width, weight, invertWeightOnHover, italic, alpha, fontLoaded, isInteractive]);
+  }, [width, weight, invertWeightOnHover, italic, alpha, fontLoaded]);
 
   const styleElement = useMemo(() => {
     return (
@@ -246,7 +232,6 @@ const TextPressure = ({
           font-family: '${fontFamily}';
           src: url('${fontUrl}');
           font-style: normal;
-          font-display: swap;
         }
         .stroke span {
           position: relative;
@@ -285,7 +270,7 @@ const TextPressure = ({
           margin: 0,
           fontWeight: 100,
           color: stroke ? undefined : textColor,
-          fontVariationSettings: weight ? undefined : "'wght' 2000, 'wdth' 100, 'ital' 1"
+          fontVariationSettings: weight ? undefined : "'wght' 1000, 'wdth' 100, 'ital' 1"
         }}
       >
         {chars.map((char, i) => (

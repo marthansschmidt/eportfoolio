@@ -1,7 +1,8 @@
-import TextPressure from './TextPressure'
 import DeferredDither from './DeferredDither'
 import ProfileCard from './ProfileCard'
-import { useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
+
+const TextPressure = lazy(() => import('./TextPressure'))
 
 function Hero() {
   const sectionRef = useRef(null)
@@ -52,17 +53,19 @@ function Hero() {
       id="hero"
       className="relative w-screen md:h-screen h-screen flex items-center justify-start md:justify-center flex-shrink-0 md:flex-shrink-0 py-0 md:py-0"
       style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(18px)',
-        filter: isVisible ? 'blur(0px)' : 'blur(4.5px)',
-        transition: 'all 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
+        opacity: isMobile || isVisible ? 1 : 0,
+        transform: isMobile || isVisible ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(18px)',
+        filter: isMobile || isVisible ? 'blur(0px)' : 'blur(4.5px)',
+        transition: isMobile ? 'none' : 'all 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
       {/* RippleGrid Background */}
       <div className="absolute inset-0 z-1 overflow-hidden">
-        <video autoPlay loop muted playsInline className="w-full h-full object-cover grayscale">
-          <source src={`${import.meta.env.BASE_URL}banner.mp4`} type="video/mp4" />
-        </video>
+        {!isMobile && (
+          <video autoPlay loop muted playsInline className="w-full h-full object-cover grayscale">
+            <source src={`${import.meta.env.BASE_URL}banner.mp4`} type="video/mp4" />
+          </video>
+        )}
 
         <div className="absolute inset-0 bg-black/60" />
 
@@ -87,7 +90,26 @@ function Hero() {
         />
       </div>
 
-      <div className="relative z-10 w-full md:w-[calc(100vw-176px)] md:ml-[176px] h-full flex flex-col items-center justify-start md:justify-center px-4 sm:px-6 pt-32 pb-8 md:py-12">
+      <style>{`
+        @media (min-width: 768px) and (max-height: 850px) {
+          #hero .hero-content-frame {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+          }
+
+          #hero .hero-profile-wrap {
+            margin-top: 2.5rem;
+          }
+        }
+
+        @media (min-width: 1024px) and (max-height: 780px) {
+          #hero .hero-profile-wrap {
+            margin-top: 2rem;
+          }
+        }
+      `}</style>
+
+      <div className="hero-content-frame relative z-10 w-full md:w-[calc(100vw-176px)] md:ml-[176px] h-full flex flex-col items-center justify-start md:justify-center px-4 sm:px-6 pt-32 pb-8 md:py-12">
         <div className="relative w-full flex flex-col items-center justify-start md:justify-center mt-0 md:mt-0">
           {/* MHX box */}
           <div className="relative flex items-center justify-center w-full">
@@ -151,30 +173,38 @@ function Hero() {
               {/* MHX */}
               <div className="relative z-10 w-full h-full flex items-center justify-center overflow-hidden">
                 <div className="w-full h-[68%] flex items-center justify-center overflow-hidden px-8 sm:px-10 md:px-[6%]">
-                  {textReady && (
-                    <TextPressure
-                      key={textKey}
-                      text="MHX"
-                      flex={false}
-                      alpha={false}
-                      stroke={false}
-                      width={false}
-                      weight={false}
-                      italic={true}
-                      textColor="#8b5cf6e8"
-                      strokeColor="#8b5cf6e8"
-                      minFontSize={80}
-                      maxFontSize={isMobile ? 108 : 150}
-                      scale={true}
-                      className="flex w-full h-full items-center justify-center gap-[clamp(1.6rem,5.2vw,4.2rem)]"
-                    />
+                  {isMobile ? (
+                    <h1 className="text-[92px] font-black italic leading-none text-[#8b5cf6e8]">
+                      MHX
+                    </h1>
+                  ) : (
+                    textReady && (
+                      <Suspense fallback={<h1 className="text-8xl font-black italic leading-none text-[#8b5cf6e8]">MHX</h1>}>
+                        <TextPressure
+                          key={textKey}
+                          text="MHX"
+                          flex={false}
+                          alpha={false}
+                          stroke={false}
+                          width={false}
+                          weight={false}
+                          italic={true}
+                          textColor="#8b5cf6e8"
+                          strokeColor="#8b5cf6e8"
+                          minFontSize={80}
+                          maxFontSize={150}
+                          scale={true}
+                          className="flex w-full h-full items-center justify-center gap-[clamp(1.6rem,5.2vw,4.2rem)]"
+                        />
+                      </Suspense>
+                    )
                   )}
                 </div>
               </div>
             </div>
           </div>
 
-            <div className="mt-16 md:mt-20 lg:mt-24 flex items-center justify-center px-4 w-full h-auto">
+            <div className="hero-profile-wrap mt-16 md:mt-20 lg:mt-24 flex items-center justify-center px-4 w-full h-auto">
             <div className="w-full max-w-[340px] sm:max-w-[360px] lg:max-w-[620px] xl:max-w-[660px] min-h-[340px] sm:min-h-[360px] flex items-center justify-center mx-auto">
               <ProfileCard
                 avatarUrl={`${import.meta.env.BASE_URL}Mart_Hans_660.jpg`}

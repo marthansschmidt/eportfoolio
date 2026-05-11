@@ -8,11 +8,28 @@ const ProfileCardComponent = ({
 }) => {
   return (
     <div className="flex flex-col items-center justify-center w-full px-4">
+      <style>{`
+        @media (min-width: 768px) and (max-height: 850px) {
+          .profile-card-frame {
+            height: clamp(330px, 48vh, 440px);
+            min-height: 330px;
+            max-height: 440px;
+          }
+        }
+
+        @media (min-width: 1024px) and (max-height: 850px) {
+          .profile-card-frame {
+            height: clamp(350px, 52vh, 500px);
+            min-height: 350px;
+            max-height: 500px;
+          }
+        }
+      `}</style>
       {/* 1. h-[55vh] - kaart võtab 55% ekraani kõrgusest (jättes 45% bännerile ja vahedele).
           2. max-h-[520px] - piirame kõrgust suurtel ekraanidel, et see ei veniks liiga suureks.
           3. max-w-[380px] - muudame kaardi veidi kitsamaks, et see mõjuks portreena paremini.
       */}
-      <div className="relative w-full max-w-[380px] lg:max-w-[620px] xl:max-w-[660px] h-[58vh] lg:h-[62vh] max-h-[520px] lg:max-h-[640px] min-h-[380px]">
+      <div className="profile-card-frame relative w-full max-w-[380px] lg:max-w-[620px] xl:max-w-[660px] h-[58vh] lg:h-[62vh] max-h-[520px] lg:max-h-[640px] min-h-[380px]">
         <BorderGlow
           borderRadius={40}
           glowRadius={50}
@@ -29,8 +46,9 @@ const ProfileCardComponent = ({
             <img 
               src={avatarUrl} 
               alt={name} 
-              fetchpriority="high"
-              decoding="async"
+              fetchPriority="high"
+              loading="eager"
+              decoding="sync"
               width="660"
               height="640"
               className="absolute inset-0 w-full h-full object-cover z-0" 
