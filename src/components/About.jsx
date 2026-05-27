@@ -19,17 +19,22 @@ function About() {
   const aboutItems = [
     {
       title: 'Developer',
-      description: 'Junior developer studying software development at Tartu Vocational College, focused on building clear and practical web solutions.',
+      description: 'Junior software developer focused on responsive web apps, practical UI work and full-stack learning with React, Node, SQL and modern tooling.',
       color: '#120F17',
     },
     {
-      title: 'Learning Mindset',
+      title: 'Growth',
       description: 'Curious, consistent and quick to learn. I enjoy turning new concepts into working features through hands-on practice.',
       color: '#120F17',
     },
     {
-      title: 'Technical Foundation',
-      description: 'Built on an IT-focused education, a silver medal graduation and the Apple Excellence program.',
+      title: 'Foundation',
+      description: 'Built on IT-focused education, a silver medal graduation and hands-on project work across frontend, backend and database basics.',
+      color: '#120F17',
+    },
+    {
+      title: 'Experience',
+      description: 'Technical sales experience at Klick, Elisa and Telo24 with e-commerce content, product data, digital services and customer solutions.',
       color: '#120F17',
     },
     {
@@ -48,25 +53,28 @@ function About() {
       color: '#120F17',
     },
     {
-      title: 'Customer Perspective',
-      description: 'Experience in technical sales at Klick, Elisa and Telo24 helps me understand user needs, communicate clearly and solve real problems.',
-      color: '#120F17',
-    },
-    {
-      title: 'Tools & Stack',
       description: (
-        <ul className="about-stack-list">
-          <li>JavaScript, HTML, CSS</li>
-          <li>React and Tailwind</li>
-          <li>Estonian and English (C1)</li>
-        </ul>
+        <div className="about-stack-chips about-stack-chips-grid">
+          <span>HTML</span>
+          <span>CSS</span>
+          <span>JavaScript</span>
+          <span>React</span>
+          <span>Tailwind</span>
+          <span>SQL</span>
+          <span>WordPress</span>
+          <span>GitHub</span>
+          <span>VS Code</span>
+          <span>Docker</span>
+          <span>Figma</span>
+          <span>Canva</span>
+        </div>
       ),
       color: '#120F17',
     }
   ];
 
   const visibleAboutItems = isMobile
-    ? aboutItems.filter((_, index) => index !== 3)
+    ? aboutItems.filter((_, index) => index !== 4)
     : aboutItems
 
   return (
@@ -119,6 +127,8 @@ function About() {
           #about .card__description {
             font-size: 1.35rem;
             line-height: 1.55;
+            text-align: justify;
+            text-wrap: pretty;
           }
 
           #about .about-stack-list {
@@ -132,6 +142,58 @@ function About() {
             padding-left: 1.2rem;
             font-size: 1.35rem;
             line-height: 1.45;
+          }
+
+          #about .about-stack-groups {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.05rem;
+            width: 100%;
+          }
+
+          #about .about-stack-label {
+            display: block;
+            margin-bottom: 0.45rem;
+            color: rgba(216, 180, 254, 0.96);
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+          }
+
+          #about .about-stack-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            width: 100%;
+            text-align: center;
+          }
+
+          #about .about-stack-chips span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 2.35rem;
+            padding: 0.45rem 0.8rem;
+            border: 1px solid rgba(168, 85, 247, 0.36);
+            border-radius: 6px;
+            background: rgba(124, 58, 237, 0.16);
+            color: rgba(255, 255, 255, 0.86);
+            font-size: 1.08rem;
+            font-weight: 650;
+            line-height: 1;
+            white-space: nowrap;
+          }
+
+          #about .about-stack-chips-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 6.35rem);
+            gap: 0.75rem;
+            width: max-content;
+            max-width: 100%;
+            margin: 0 auto;
+            align-self: center;
+            justify-content: center;
           }
 
           #about .bento-section {
@@ -148,8 +210,8 @@ function About() {
           }
 
           @media (min-width: 768px) {
-            /* Cubes-kaart on desktopis 4. element; mobiilis on see eemaldatud. */
-            #about .card:nth-child(4) .card__content {
+            /* Cubes-kaart on desktopis 5. element; mobiilis on see eemaldatud. */
+            #about .card:nth-child(5) .card__content {
                position: absolute;
                inset: 0;
                width: 100%;
@@ -159,6 +221,16 @@ function About() {
                display: flex;
                align-items: center;
                justify-content: center;
+            }
+
+            #about .card:nth-child(6) .card__header {
+              display: none;
+            }
+
+            #about .card:nth-child(6) .card__content {
+              justify-content: center;
+              align-items: center;
+              text-align: center;
             }
 
             #about .about-content {
@@ -215,13 +287,34 @@ function About() {
             }
 
             #about .card__description {
-              font-size: 1.18rem;
-              line-height: 1.5;
+              font-size: 1.32rem;
+              line-height: 1.48;
             }
 
             #about .about-stack-list {
               font-size: 1.18rem;
-              gap: 0.45rem;
+              gap: 0.35rem;
+              line-height: 1.36;
+            }
+
+            #about .about-stack-groups {
+              gap: 1.05rem;
+            }
+
+            #about .about-stack-label {
+              font-size: 0.78rem;
+              margin-bottom: 0.3rem;
+            }
+
+            #about .about-stack-chips-grid {
+              gap: 0.65rem;
+              grid-template-columns: repeat(4, 5.9rem);
+            }
+
+            #about .about-stack-chips span {
+              min-height: 2.1rem;
+              padding: 0.36rem 0.62rem;
+              font-size: 1rem;
             }
           }
 
@@ -252,14 +345,97 @@ function About() {
               margin-bottom: 0.8rem;
             }
 
+            #about .card:nth-child(6) .card__header {
+              display: none;
+            }
+
             #about .card__title {
               font-size: 1.55rem;
             }
 
             #about .card__description,
             #about .about-stack-list {
-              font-size: 1rem;
+              font-size: 1.12rem;
               line-height: 1.42;
+            }
+
+            #about .about-stack-groups {
+              gap: 0.65rem;
+            }
+
+            #about .about-stack-label {
+              font-size: 0.68rem;
+              margin-bottom: 0.25rem;
+            }
+
+            #about .about-stack-chips {
+              gap: 0.32rem;
+            }
+
+            #about .about-stack-chips-grid {
+              grid-template-columns: repeat(4, 5.2rem);
+              gap: 0.42rem;
+            }
+
+            #about .about-stack-chips span {
+              min-height: 1.68rem;
+              padding: 0.26rem 0.42rem;
+              font-size: 0.76rem;
+              border-radius: 5px;
+            }
+          }
+
+          @media (min-width: 768px) and (max-height: 780px) {
+            #about .about-content {
+              padding-top: 1.5rem;
+              padding-bottom: 1.5rem;
+            }
+
+            #about .about-heading {
+              height: 96px;
+            }
+
+            #about .about-main {
+              margin-top: 1rem;
+              gap: 1rem;
+            }
+
+            #about .card-responsive {
+              gap: 0.75rem;
+            }
+
+            #about .card {
+              padding: 1rem 1.2rem;
+            }
+
+            #about .card__header {
+              margin-bottom: 0.55rem;
+            }
+
+            #about .card__title {
+              font-size: 1.35rem;
+            }
+
+            #about .card__description,
+            #about .about-stack-list {
+              font-size: 0.95rem;
+              line-height: 1.34;
+            }
+
+            #about .about-cubes-wrap {
+              height: min(calc(100% - 2rem), 150px);
+              max-width: 150px;
+            }
+
+            #about .about-stack-chips-grid {
+              grid-template-columns: repeat(4, 4.7rem);
+              gap: 0.36rem;
+            }
+
+            #about .about-stack-chips span {
+              min-height: 1.48rem;
+              padding: 0.22rem 0.34rem;
+              font-size: 0.68rem;
             }
           }
 
@@ -295,13 +471,32 @@ function About() {
             }
 
             #about .card__description {
-              font-size: 1rem;
+              font-size: 1.08rem;
               line-height: 1.5;
             }
 
             #about .about-stack-list {
               font-size: 1rem;
               gap: 0.35rem;
+            }
+
+            #about .about-stack-chips span {
+              font-size: 0.9rem;
+            }
+
+            #about .about-stack-chips-grid {
+              grid-template-columns: repeat(2, minmax(0, 1fr));
+              width: min(100%, 17rem);
+              max-width: 100%;
+              margin: 0 auto;
+              justify-self: center;
+              align-self: center;
+            }
+
+            #about .card:last-child .card__content {
+              align-items: center;
+              justify-content: center;
+              text-align: center;
             }
           }
         `}
@@ -437,8 +632,8 @@ function About() {
           </div>
           
           {/* Pildi osa - lg:mt-10 nihutab pilti allapoole */}
-          <div className="w-full lg:flex-1 flex justify-center lg:justify-end order-2 min-w-0">
-            <div className="relative w-full max-w-[480px] h-[360px] sm:h-[460px] lg:h-full lg:max-h-full overflow-hidden border border-purple-500/10 rounded-none shadow-2xl flex-shrink-0">
+          <div className="w-full max-w-[420px] sm:max-w-[500px] md:max-w-[900px] lg:max-w-none mx-auto lg:flex-1 flex justify-center lg:justify-end order-2 min-w-0">
+            <div className="relative w-full max-w-[420px] sm:max-w-[500px] md:max-w-[900px] lg:max-w-[480px] h-[360px] sm:h-[460px] lg:h-full lg:max-h-full overflow-hidden border border-purple-500/10 rounded-none shadow-2xl flex-shrink-0">
               <img
                 src={`${import.meta.env.BASE_URL}mjaaartyeees_640.jpg`}
                 alt="Märt"

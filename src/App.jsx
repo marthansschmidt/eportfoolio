@@ -144,8 +144,10 @@ function App() {
       const activeSection = event.target.closest?.('.scroll-page')
 
       if (activeSection && Math.abs(event.deltaY) >= Math.abs(event.deltaX)) {
-        const canScrollDown = event.deltaY > 0 && activeSection.scrollTop + activeSection.clientHeight < activeSection.scrollHeight - 2
-        const canScrollUp = event.deltaY < 0 && activeSection.scrollTop > 2
+        const overflowY = window.getComputedStyle(activeSection).overflowY
+        const canScrollVertically = overflowY === 'auto' || overflowY === 'scroll'
+        const canScrollDown = canScrollVertically && event.deltaY > 0 && activeSection.scrollTop + activeSection.clientHeight < activeSection.scrollHeight - 2
+        const canScrollUp = canScrollVertically && event.deltaY < 0 && activeSection.scrollTop > 2
 
         if (canScrollDown || canScrollUp) {
           return
@@ -358,7 +360,7 @@ function App() {
             min-height: 0;
             padding-top: 0; 
             justify-content: center;
-            overflow-y: auto;
+            overflow-y: hidden;
             overscroll-behavior: contain;
           }
 

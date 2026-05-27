@@ -47,6 +47,7 @@ function Projects() {
       github: 'https://github.com/111markus/MakeUpByKristiKliimann.git',
       liveUrl: 'https://kristikliimannbeauty.onrender.com',
       type: 'website',
+      technologies: ['React', 'Vite', 'Tailwind CSS', 'Express', 'SQLite'],
       video: `${import.meta.env.BASE_URL}projects/Kristi_preview.webm`,
       previewImage: `${import.meta.env.BASE_URL}projects/makeup-kristi.png`,
       
@@ -58,6 +59,7 @@ function Projects() {
       github: 'https://github.com/marthansschmidt/H2katon.git',
       liveUrl: 'https://suumadin.onrender.com',
       type: 'project',
+      technologies: ['React', 'Vite', 'Tailwind CSS', 'Express', 'Socket.IO', 'Three.js'],
       video: `${import.meta.env.BASE_URL}projects/suumadin_preview.webm`,
       previewImage: `${import.meta.env.BASE_URL}projects/suumadin.png`,
       
@@ -69,6 +71,7 @@ function Projects() {
       github: 'https://github.com/111markus/ManguProjekt.git',
       liveUrl: 'https://reactaim3d.onrender.com',
       type: 'game',
+      technologies: ['React', 'A-Frame', 'Firebase', 'Express', 'Node.js'],
       video: `${import.meta.env.BASE_URL}projects/react_aim_preview.webm`,
       previewImage: `${import.meta.env.BASE_URL}projects/react-aim-3d.png`,
       
@@ -80,6 +83,7 @@ function Projects() {
       github: 'https://github.com/marthansschmidt/hobileht_HMTL_CSS',
       liveUrl: 'https://carmelestudios.onrender.com',
       type: 'website',
+      technologies: ['HTML', 'CSS', 'JavaScript'],
       video: `${import.meta.env.BASE_URL}projects/carmele_preview.webm`,
       previewImage: `${import.meta.env.BASE_URL}projects/hobileht.png`,
     
@@ -262,7 +266,7 @@ function Projects() {
 
           @media (min-width: 768px) {
             .project-preview {
-              height: 380px;
+              height: 340px;
             }
           }
 
@@ -320,29 +324,36 @@ function Projects() {
           }
 
           .project-description {
-            font-size: 0.95rem;
+            font-size: 1.08rem;
+            line-height: 1.5;
             color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 16px;
+            margin: 0 auto 18px;
             flex: 1;
+            max-width: 620px;
             font-family: 'Inter', system-ui, sans-serif;
+            text-align: center;
+            text-wrap: balance;
           }
 
           .project-tags {
             display: flex;
             flex-wrap: wrap;
+            justify-content: center;
             gap: 8px;
-            margin-bottom: 16px;
+            margin: 0 0 16px;
           }
 
           .project-tag {
-            font-size: 0.75rem;
-            padding: 4px 12px;
+            font-size: 0.88rem;
+            padding: 7px 13px;
             background: rgba(124, 58, 237, 0.2);
             border: 1px solid rgba(124, 58, 237, 0.4);
-            border-radius: 20px;
+            border-radius: 6px;
             color: rgba(168, 85, 247, 0.9);
             transition: all 0.3s ease;
             font-family: 'Inter', system-ui, sans-serif;
+            line-height: 1.1;
+            white-space: nowrap;
           }
 
           .project-card:hover .project-tag {
@@ -433,38 +444,55 @@ function Projects() {
           }
 
           @media (min-width: 768px) {
+            #projects {
+              height: 100vh;
+              min-height: 0;
+              padding-top: 0;
+              padding-bottom: 0;
+            }
+
             #projects .projects-content-frame {
               width: calc(100vw - 176px);
+              max-width: none;
               margin-left: 176px;
               padding: 0 24px;
               display: flex;
               flex-direction: column;
               align-items: center;
+              height: 100%;
+              min-height: 0;
+              padding-top: 4rem;
+              padding-bottom: 2.5rem;
             }
 
             #projects .projects-carousel {
               width: 100%;
               max-width: min(1500px, calc(100vw - 224px));
+              flex: 1;
+              min-height: 0;
+              align-items: flex-start;
+              margin-top: 0;
             }
           }
 
           @media (min-width: 768px) and (max-height: 850px) {
-            #projects {
-              padding-top: 2.5rem;
+            #projects .projects-content-frame {
+              padding-top: 4rem;
               padding-bottom: 2.5rem;
             }
 
             #projects .projects-heading {
               height: 112px;
-              margin-bottom: 2rem;
+              margin-bottom: 1.75rem;
             }
 
             #projects .projects-carousel {
               margin-top: 0;
+              align-items: flex-start;
             }
 
             .project-preview {
-              height: clamp(240px, 32vh, 300px);
+              height: clamp(230px, 34vh, 280px);
             }
 
             .project-content {
@@ -477,13 +505,69 @@ function Projects() {
             }
 
             .project-description {
-              font-size: 0.88rem;
+              font-size: 0.98rem;
               line-height: 1.45;
               margin-bottom: 10px;
+              max-width: 540px;
+            }
+
+            .project-tags {
+              gap: 6px;
+              margin-bottom: 10px;
+            }
+
+            .project-tag {
+              font-size: 0.78rem;
+              padding: 5px 9px;
             }
 
             .project-links {
               padding-top: 10px;
+            }
+          }
+
+          @media (min-width: 768px) and (max-height: 780px) {
+            #projects .projects-content-frame {
+              padding-top: 4rem;
+              padding-bottom: 1.5rem;
+            }
+
+            #projects .projects-heading {
+              height: 96px;
+              margin-bottom: 1rem;
+            }
+
+            .project-preview {
+              height: clamp(210px, 32vh, 250px);
+            }
+
+            .project-content {
+              padding: 13px;
+            }
+
+            .project-title {
+              font-size: 1.12rem;
+              margin-bottom: 5px;
+            }
+
+            .project-description {
+              font-size: 0.84rem;
+              line-height: 1.36;
+              margin-bottom: 7px;
+            }
+
+            .project-tags {
+              gap: 5px;
+              margin-bottom: 7px;
+            }
+
+            .project-tag {
+              font-size: 0.66rem;
+              padding: 4px 7px;
+            }
+
+            .project-links {
+              padding-top: 8px;
             }
           }
 
@@ -524,7 +608,7 @@ function Projects() {
             }
 
             .project-card {
-              height: 480px;
+              height: 540px;
             }
 
             .project-preview {
@@ -538,12 +622,23 @@ function Projects() {
             }
 
             .project-description {
-              font-size: 1.24rem;
-              line-height: 1.55;
-              margin-bottom: 16px;
-              min-height: 4.8em;
-              max-height: 4.8em;
+              font-size: 1.04rem;
+              line-height: 1.45;
+              margin-bottom: 14px;
+              min-height: 4.35em;
+              max-height: 4.35em;
               overflow: hidden;
+              max-width: 100%;
+            }
+
+            .project-tags {
+              gap: 7px;
+              margin-bottom: 14px;
+            }
+
+            .project-tag {
+              font-size: 0.72rem;
+              padding: 5px 9px;
             }
 
             .project-links {
@@ -554,7 +649,7 @@ function Projects() {
         `}
       </style>
 
-      <div className="projects-content-frame relative z-20 w-full flex flex-col items-center">
+      <div className="projects-content-frame relative z-20 w-full flex flex-col items-center min-h-screen lg:min-h-0 lg:h-full">
       {/* Title Box */}
       <div className="projects-heading relative w-full max-w-[1100px] h-[112px] sm:h-[140px] rounded-none overflow-visible border border-[#7c3aed]/50 mx-auto flex-shrink-0 mb-20 md:mb-16 lg:mb-24 z-20" style={{
         boxShadow: `0 0 40px rgba(169, 85, 247, 0.4),
@@ -687,6 +782,13 @@ function Projects() {
                 <div className="project-text-block">
                   <h3 className="project-title">{project.title}</h3>
                   <p className="project-description">{project.description}</p>
+                  <div className="project-tags" aria-label={`${project.title} technologies`}>
+                    {project.technologies.map((technology) => (
+                      <span key={technology} className="project-tag">
+                        {technology}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="project-links">

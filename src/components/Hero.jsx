@@ -103,8 +103,17 @@ function Hero() {
         }
 
         @media (min-width: 1024px) and (max-height: 780px) {
+          #hero .hero-content-frame {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+          }
+
           #hero .hero-profile-wrap {
-            margin-top: 2rem;
+            margin-top: 1.25rem;
+          }
+
+          #hero .hero-title-box {
+            height: 96px;
           }
         }
       `}</style>
@@ -113,7 +122,7 @@ function Hero() {
         <div className="relative w-full flex flex-col items-center justify-start md:justify-center mt-0 md:mt-0">
           {/* MHX box */}
           <div className="relative flex items-center justify-center w-full">
-            <div className="relative w-full max-w-[1100px] h-[112px] sm:h-[140px] rounded-none overflow-visible border border-[#7c3aed]/50 mx-auto flex-shrink-0" style={{
+            <div className="hero-title-box relative w-full max-w-[1100px] h-[112px] sm:h-[140px] rounded-none overflow-visible border border-[#7c3aed]/50 mx-auto flex-shrink-0" style={{
               boxShadow: `0 0 40px rgba(169, 85, 247, 0.4),
                           0 0 80px rgba(169, 85, 247, 0.25),
                           0 0 120px rgba(124, 58, 237, 0.15),

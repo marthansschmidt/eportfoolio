@@ -24,6 +24,14 @@ const ProfileCardComponent = ({
             max-height: 500px;
           }
         }
+
+        @media (min-width: 1024px) and (max-height: 780px) {
+          .profile-card-frame {
+            height: clamp(310px, 48vh, 390px);
+            min-height: 310px;
+            max-height: 390px;
+          }
+        }
       `}</style>
       {/* 1. h-[55vh] - kaart võtab 55% ekraani kõrgusest (jättes 45% bännerile ja vahedele).
           2. max-h-[520px] - piirame kõrgust suurtel ekraanidel, et see ei veniks liiga suureks.
