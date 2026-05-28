@@ -75,7 +75,7 @@ function Contact() {
     >
       <div className="hidden md:block absolute inset-0 z-0 overflow-hidden">
         <video
-          src={`${import.meta.env.BASE_URL}contact.mp4`}
+          src={`${import.meta.env.BASE_URL}contact.webm`}
           autoPlay
           muted
           loop
@@ -91,8 +91,8 @@ function Contact() {
               linear-gradient(to top, rgba(0,0,0,0.76), transparent 24%, transparent 76%, rgba(0,0,0,0.64)),
               linear-gradient(to right, rgba(0,0,0,0.68), transparent 16%, transparent 84%, rgba(0,0,0,0.68))
             `,
-            backdropFilter: 'none',
-            WebkitBackdropFilter: 'none',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
           }}
         />
         <div
@@ -102,6 +102,15 @@ function Contact() {
           }}
         />
       </div>
+
+      <a
+        href="https://www.pinterest.com/pin/1044412969837460375/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hidden md:block absolute top-3 right-3 z-30 text-[10px] uppercase tracking-[0.18em] text-white/30 hover:text-white/70 transition-colors"
+      >
+        Background
+      </a>
 
       <style>{`
         @media (min-width: 768px) {
@@ -314,6 +323,10 @@ function Contact() {
           text-decoration: none;
         }
 
+        #contact .contact-footer-mark {
+          font-family: 'Inter', system-ui, sans-serif;
+        }
+
         @media (min-width: 768px) and (max-height: 850px) {
           #contact .contact-content-frame {
             padding-top: 4rem;
@@ -459,12 +472,71 @@ function Contact() {
         }
 
         @media (max-width: 520px) {
+          #contact {
+            padding-bottom: 0;
+          }
+
+          #contact .contact-heading {
+            height: 96px;
+          }
+
+          #contact .contact-form-wrap {
+            padding-left: 0;
+            padding-right: 0;
+            margin-top: 4rem;
+          }
+
+          #contact .contact-card {
+            max-width: none;
+          }
+
+          #contact .contact-panel {
+            gap: 1rem;
+            padding: 1.05rem;
+          }
+
+          #contact .contact-copy {
+            font-size: 0.94rem;
+            line-height: 1.42;
+          }
+
           #contact .contact-link-row {
             grid-template-columns: 1fr;
+            gap: 0.62rem;
+            padding: 0.9rem;
+          }
+
+          #contact .contact-link-label {
+            font-size: 0.78rem;
+          }
+
+          #contact .contact-link-value {
+            font-size: 1.02rem;
           }
 
           #contact .contact-copy-button {
             width: 100%;
+            padding: 0.78rem 0.85rem;
+            font-size: 0.95rem;
+          }
+
+          #contact .contact-effect-panel {
+            min-height: clamp(188px, 28svh, 240px);
+          }
+
+          #contact .contact-mhx-logo {
+            width: clamp(230px, 66vw, 310px);
+          }
+
+          #contact .contact-logo-loop {
+            margin-top: 3.5rem;
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+          }
+
+          #contact .contact-logo-loop-bg {
+            border-top: 0;
+            border-bottom: 0;
           }
         }
       `}</style>
@@ -521,7 +593,7 @@ function Contact() {
           </div>
         </div>
 
-        <div className="contact-form-wrap flex-1 flex items-center justify-center w-full px-6 z-20 mt-8 sm:mt-10 lg:mt-8">
+        <div className="contact-form-wrap flex-1 flex items-center justify-center w-full px-0 sm:px-6 z-20 mt-8 sm:mt-10 lg:mt-8">
           <div className="contact-card">
             <div className="contact-panel">
               <div>
@@ -588,7 +660,7 @@ function Contact() {
         </div>
 
         <div className="contact-logo-loop relative w-[calc(100%+2rem)] -mx-4 sm:w-[calc(100%+3rem)] sm:-mx-6 md:w-screen md:mx-0 md:-ml-[176px] overflow-hidden opacity-90 hover:opacity-100 transition-opacity duration-500 pt-14 pb-8 sm:pt-16 lg:py-8 z-20">
-          <div className="absolute inset-0 bg-black/88 backdrop-blur-sm border-y border-purple-500/10 pointer-events-none" />
+          <div className="contact-logo-loop-bg absolute inset-0 bg-black/88 backdrop-blur-sm border-y border-purple-500/10 pointer-events-none" />
           <LogoLoop
             logos={techLogos}
             speed={15}
@@ -596,6 +668,10 @@ function Contact() {
             gap={60}
             direction="right"
           />
+        </div>
+
+        <div className="contact-footer-mark relative z-20 flex h-20 w-full items-center justify-center text-center text-sm font-bold uppercase tracking-[0.22em] text-white/35">
+          © MHX 2026
         </div>
       </div>
     </section>

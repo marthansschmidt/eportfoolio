@@ -19,17 +19,17 @@ const ProfileCardComponent = ({
 
         @media (min-width: 1024px) and (max-height: 850px) {
           .profile-card-frame {
-            height: clamp(350px, 52vh, 500px);
-            min-height: 350px;
-            max-height: 500px;
+            height: clamp(390px, 58vh, 560px);
+            min-height: 390px;
+            max-height: 560px;
           }
         }
 
         @media (min-width: 1024px) and (max-height: 780px) {
           .profile-card-frame {
-            height: clamp(310px, 48vh, 390px);
-            min-height: 310px;
-            max-height: 390px;
+            height: clamp(350px, 54vh, 450px);
+            min-height: 350px;
+            max-height: 450px;
           }
         }
       `}</style>
@@ -37,7 +37,7 @@ const ProfileCardComponent = ({
           2. max-h-[520px] - piirame kõrgust suurtel ekraanidel, et see ei veniks liiga suureks.
           3. max-w-[380px] - muudame kaardi veidi kitsamaks, et see mõjuks portreena paremini.
       */}
-      <div className="profile-card-frame relative w-full max-w-[380px] lg:max-w-[620px] xl:max-w-[660px] h-[58vh] lg:h-[62vh] max-h-[520px] lg:max-h-[640px] min-h-[380px]">
+      <div className="profile-card-frame relative w-full max-w-[380px] lg:max-w-[720px] xl:max-w-[800px] h-[58vh] lg:h-[70vh] max-h-[520px] lg:max-h-[720px] min-h-[380px]">
         <BorderGlow
           borderRadius={40}
           glowRadius={50}

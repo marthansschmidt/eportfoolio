@@ -132,20 +132,25 @@ function Projects() {
           isMobile ? 'w-14 h-14 text-2xl' : 'w-14 h-14 text-2xl'
         }`}
         style={{
-          background: isDisabled ? 'rgba(124, 58, 237, 0.2)' : 'rgba(124, 58, 237, 0.4)',
-          border: isDisabled ? '1px solid rgba(124, 58, 237, 0.2)' : '1px solid rgba(168, 85, 247, 0.6)',
-          color: isDisabled ? 'rgba(168, 85, 247, 0.4)' : 'rgba(200, 130, 255, 1)',
+          background: isDisabled
+            ? 'rgba(18, 14, 31, 0.82)'
+            : 'linear-gradient(135deg, rgba(168, 85, 247, 0.92), rgba(56, 189, 248, 0.72))',
+          border: isDisabled ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(255, 255, 255, 0.62)',
+          color: isDisabled ? 'rgba(255, 255, 255, 0.34)' : '#ffffff',
           cursor: isDisabled ? 'not-allowed' : 'pointer',
+          boxShadow: isDisabled ? 'none' : '0 0 22px rgba(168, 85, 247, 0.42), 0 10px 30px rgba(0, 0, 0, 0.36)',
         }}
         onMouseEnter={(e) => {
           if (!isDisabled) {
-            e.currentTarget.style.background = 'rgba(168, 85, 247, 0.6)'
-            e.currentTarget.style.boxShadow = '0 0 20px rgba(168, 85, 247, 0.5)'
+            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(216, 180, 254, 0.96), rgba(34, 211, 238, 0.82))'
+            e.currentTarget.style.boxShadow = '0 0 28px rgba(168, 85, 247, 0.62), 0 12px 32px rgba(0, 0, 0, 0.42)'
           }
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.background = isDisabled ? 'rgba(124, 58, 237, 0.2)' : 'rgba(124, 58, 237, 0.4)'
-          e.currentTarget.style.boxShadow = 'none'
+          e.currentTarget.style.background = isDisabled
+            ? 'rgba(18, 14, 31, 0.82)'
+            : 'linear-gradient(135deg, rgba(168, 85, 247, 0.92), rgba(56, 189, 248, 0.72))'
+          e.currentTarget.style.boxShadow = isDisabled ? 'none' : '0 0 22px rgba(168, 85, 247, 0.42), 0 10px 30px rgba(0, 0, 0, 0.36)'
         }}
       >
         <span aria-hidden="true">{isPrev ? '\u2190' : '\u2192'}</span>
@@ -346,20 +351,21 @@ function Projects() {
           .project-tag {
             font-size: 0.88rem;
             padding: 7px 13px;
-            background: rgba(124, 58, 237, 0.2);
-            border: 1px solid rgba(124, 58, 237, 0.4);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.24);
             border-radius: 6px;
-            color: rgba(168, 85, 247, 0.9);
+            color: rgba(255, 255, 255, 0.96);
             transition: all 0.3s ease;
             font-family: 'Inter', system-ui, sans-serif;
             line-height: 1.1;
             white-space: nowrap;
+            text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
           }
 
           .project-card:hover .project-tag {
-            background: rgba(124, 58, 237, 0.3);
-            border-color: rgba(168, 85, 247, 0.6);
-            color: rgba(200, 130, 255, 1);
+            background: rgba(255, 255, 255, 0.16);
+            border-color: rgba(255, 255, 255, 0.42);
+            color: #ffffff;
           }
 
           .project-links {
@@ -467,11 +473,13 @@ function Projects() {
 
             #projects .projects-carousel {
               width: 100%;
-              max-width: min(1500px, calc(100vw - 224px));
+              max-width: min(1580px, calc(100vw - 224px));
               flex: 1;
               min-height: 0;
               align-items: flex-start;
               margin-top: 0;
+              padding-left: clamp(7rem, 8vw, 9rem);
+              padding-right: clamp(7rem, 8vw, 9rem);
             }
           }
 
@@ -575,6 +583,29 @@ function Projects() {
             position: relative;
             z-index: 50;
             flex-shrink: 0;
+            overflow: hidden;
+            isolation: isolate;
+          }
+
+          .projects-nav-button::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background:
+              radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.28), transparent 34%),
+              linear-gradient(135deg, rgba(255, 255, 255, 0.13), transparent 48%);
+            opacity: 0.72;
+            pointer-events: none;
+            z-index: -1;
+          }
+
+          .projects-nav-button:not(:disabled):hover {
+            transform: translateY(-50%) scale(1.06);
+          }
+
+          .projects-mobile-nav .projects-nav-button:not(:disabled):hover {
+            transform: scale(1.06);
           }
 
           .projects-mobile-nav {
@@ -590,7 +621,7 @@ function Projects() {
 
           .projects-prev-button::before,
           .projects-next-button::before {
-            font-size: 1.5rem;
+            font-size: 2.15rem;
             line-height: 1;
           }
 
@@ -603,30 +634,50 @@ function Projects() {
           }
 
           @media (max-width: 767px) {
+            #projects {
+              min-height: 100svh;
+              padding-bottom: 1.25rem;
+            }
+
+            #projects .projects-content-frame {
+              min-height: 100svh;
+            }
+
+            #projects .projects-heading {
+              height: 108px;
+              margin-bottom: 4.25rem;
+            }
+
+            #projects .projects-carousel {
+              margin-top: 0;
+              gap: 0.8rem;
+            }
+
             .project-card:hover {
               transform: none;
             }
 
             .project-card {
-              height: 540px;
+              height: min(520px, calc(100svh - 270px));
+              min-height: 460px;
             }
 
             .project-preview {
-              height: clamp(165px, 30vh, 235px);
+              height: clamp(145px, 28vh, 220px);
               flex-shrink: 0;
             }
 
             .project-title {
-              font-size: 1.75rem;
-              margin-bottom: 10px;
+              font-size: 1.52rem;
+              margin-bottom: 8px;
             }
 
             .project-description {
-              font-size: 1.04rem;
-              line-height: 1.45;
-              margin-bottom: 14px;
-              min-height: 4.35em;
-              max-height: 4.35em;
+              font-size: 0.95rem;
+              line-height: 1.38;
+              margin-bottom: 10px;
+              min-height: 3.95em;
+              max-height: 3.95em;
               overflow: hidden;
               max-width: 100%;
             }
@@ -642,8 +693,13 @@ function Projects() {
             }
 
             .project-links {
-              padding-top: 14px;
+              padding-top: 10px;
               margin-top: auto;
+            }
+
+            .projects-mobile-nav {
+              margin-top: 0.35rem;
+              padding-bottom: 0.25rem;
             }
           }
         `}
@@ -702,33 +758,34 @@ function Projects() {
 
       {/* Projects Grid with Horizontal Navigation */}
       <div 
-        className="projects-carousel relative flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 z-20 mt-2 md:mt-6 w-full max-w-[1500px] select-none md:px-20"
+        className="projects-carousel relative flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 z-20 mt-2 md:mt-6 w-full max-w-[1580px] select-none"
       >
         {/* Back Button */}
         <button
           onClick={handlePrev}
           disabled={currentIndex === 0}
           aria-label="Previous projects"
-          className="hidden md:flex md:absolute md:left-0 md:top-1/2 md:-translate-y-1/2 projects-nav-button projects-prev-button items-center justify-center w-14 h-14 rounded-full transition-all duration-300 font-bold text-2xl flex-shrink-0 z-50"
+          className="hidden md:flex md:absolute md:left-0 md:top-1/2 md:-translate-y-1/2 projects-nav-button projects-prev-button items-center justify-center w-20 h-20 rounded-full transition-all duration-300 font-bold text-3xl flex-shrink-0 z-50"
           style={{
             position: 'absolute',
-            left: 0,
+            left: 'clamp(0.75rem, 1.4vw, 1.5rem)',
             top: '260px',
             transform: 'translateY(-50%)',
-            background: currentIndex === 0 ? 'rgba(124, 58, 237, 0.2)' : 'rgba(124, 58, 237, 0.4)',
-            border: currentIndex === 0 ? '1px solid rgba(124, 58, 237, 0.2)' : '1px solid rgba(168, 85, 247, 0.6)',
-            color: currentIndex === 0 ? 'rgba(168, 85, 247, 0.4)' : 'rgba(200, 130, 255, 1)',
+            background: currentIndex === 0 ? 'rgba(18, 14, 31, 0.82)' : 'linear-gradient(135deg, rgba(168, 85, 247, 0.92), rgba(56, 189, 248, 0.72))',
+            border: currentIndex === 0 ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(255, 255, 255, 0.62)',
+            color: currentIndex === 0 ? 'rgba(255, 255, 255, 0.34)' : '#ffffff',
             cursor: currentIndex === 0 ? 'not-allowed' : 'pointer',
+            boxShadow: currentIndex === 0 ? 'none' : '0 0 22px rgba(168, 85, 247, 0.42), 0 10px 30px rgba(0, 0, 0, 0.36)',
           }}
           onMouseEnter={(e) => {
             if (currentIndex > 0) {
-              e.currentTarget.style.background = 'rgba(168, 85, 247, 0.6)'
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(168, 85, 247, 0.5)'
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(216, 180, 254, 0.96), rgba(34, 211, 238, 0.82))'
+              e.currentTarget.style.boxShadow = '0 0 28px rgba(168, 85, 247, 0.62), 0 12px 32px rgba(0, 0, 0, 0.42)'
             }
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = currentIndex === 0 ? 'rgba(124, 58, 237, 0.2)' : 'rgba(124, 58, 237, 0.4)'
-            e.currentTarget.style.boxShadow = 'none'
+            e.currentTarget.style.background = currentIndex === 0 ? 'rgba(18, 14, 31, 0.82)' : 'linear-gradient(135deg, rgba(168, 85, 247, 0.92), rgba(56, 189, 248, 0.72))'
+            e.currentTarget.style.boxShadow = currentIndex === 0 ? 'none' : '0 0 22px rgba(168, 85, 247, 0.42), 0 10px 30px rgba(0, 0, 0, 0.36)'
           }}
         >
           ←
@@ -829,26 +886,27 @@ function Projects() {
           onClick={handleNext}
           disabled={currentIndex === maxIndex}
           aria-label="Next projects"
-          className="hidden md:flex md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2 projects-nav-button projects-next-button items-center justify-center w-14 h-14 rounded-full transition-all duration-300 font-bold text-2xl flex-shrink-0"
+          className="hidden md:flex md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2 projects-nav-button projects-next-button items-center justify-center w-20 h-20 rounded-full transition-all duration-300 font-bold text-3xl flex-shrink-0"
           style={{
             position: 'absolute',
-            right: 0,
+            right: 'clamp(0.75rem, 1.4vw, 1.5rem)',
             top: '260px',
             transform: 'translateY(-50%)',
-            background: currentIndex === maxIndex ? 'rgba(124, 58, 237, 0.2)' : 'rgba(124, 58, 237, 0.4)',
-            border: currentIndex === maxIndex ? '1px solid rgba(124, 58, 237, 0.2)' : '1px solid rgba(168, 85, 247, 0.6)',
-            color: currentIndex === maxIndex ? 'rgba(168, 85, 247, 0.4)' : 'rgba(200, 130, 255, 1)',
+            background: currentIndex === maxIndex ? 'rgba(18, 14, 31, 0.82)' : 'linear-gradient(135deg, rgba(168, 85, 247, 0.92), rgba(56, 189, 248, 0.72))',
+            border: currentIndex === maxIndex ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(255, 255, 255, 0.62)',
+            color: currentIndex === maxIndex ? 'rgba(255, 255, 255, 0.34)' : '#ffffff',
             cursor: currentIndex === maxIndex ? 'not-allowed' : 'pointer',
+            boxShadow: currentIndex === maxIndex ? 'none' : '0 0 22px rgba(168, 85, 247, 0.42), 0 10px 30px rgba(0, 0, 0, 0.36)',
           }}
           onMouseEnter={(e) => {
             if (currentIndex < maxIndex) {
-              e.target.style.background = 'rgba(168, 85, 247, 0.6)'
-              e.target.style.boxShadow = '0 0 20px rgba(168, 85, 247, 0.5)'
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(216, 180, 254, 0.96), rgba(34, 211, 238, 0.82))'
+              e.currentTarget.style.boxShadow = '0 0 28px rgba(168, 85, 247, 0.62), 0 12px 32px rgba(0, 0, 0, 0.42)'
             }
           }}
           onMouseLeave={(e) => {
-            e.target.style.background = currentIndex === maxIndex ? 'rgba(124, 58, 237, 0.2)' : 'rgba(124, 58, 237, 0.4)'
-            e.target.style.boxShadow = 'none'
+            e.currentTarget.style.background = currentIndex === maxIndex ? 'rgba(18, 14, 31, 0.82)' : 'linear-gradient(135deg, rgba(168, 85, 247, 0.92), rgba(56, 189, 248, 0.72))'
+            e.currentTarget.style.boxShadow = currentIndex === maxIndex ? 'none' : '0 0 22px rgba(168, 85, 247, 0.42), 0 10px 30px rgba(0, 0, 0, 0.36)'
           }}
         >
           →

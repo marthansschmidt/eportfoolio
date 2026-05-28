@@ -9,6 +9,8 @@ const Contact = lazy(() => import('./components/Contact'))
 function App() {
   const containerRef = useRef(null)
   const currentPageRef = useRef(0)
+  const programmaticScrollRef = useRef(false)
+  const programmaticScrollTimerRef = useRef(null)
   const wheelLockRef = useRef(false)
   const wheelDeltaRef = useRef(0)
   const wheelReleaseTimerRef = useRef(null)
@@ -21,8 +23,19 @@ function App() {
   const goToPage = useCallback((pageIndex) => {
     if (pageIndex < 0 || pageIndex >= pages.length) return
 
+    programmaticScrollRef.current = true
+    if (programmaticScrollTimerRef.current) {
+      clearTimeout(programmaticScrollTimerRef.current)
+    }
+
     currentPageRef.current = pageIndex
     setCurrentPage(pageIndex)
+
+    programmaticScrollTimerRef.current = setTimeout(() => {
+      programmaticScrollRef.current = false
+      currentPageRef.current = pageIndex
+      setCurrentPage(pageIndex)
+    }, 950)
 
     if (isMobile) {
       document.getElementById(pages[pageIndex])?.scrollIntoView({
@@ -48,6 +61,14 @@ function App() {
   useEffect(() => {
     currentPageRef.current = currentPage
   }, [currentPage])
+
+  useEffect(() => {
+    return () => {
+      if (programmaticScrollTimerRef.current) {
+        clearTimeout(programmaticScrollTimerRef.current)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768)
@@ -79,6 +100,8 @@ function App() {
 
     let frameId = 0
     const handleScroll = () => {
+      if (programmaticScrollRef.current) return
+
       cancelAnimationFrame(frameId)
       frameId = requestAnimationFrame(() => {
         const pageIndex = pages.reduce((closestIndex, page, index) => {
@@ -111,10 +134,13 @@ function App() {
 
     let frameId = 0
     const handleScroll = () => {
+      if (programmaticScrollRef.current) return
+
       cancelAnimationFrame(frameId)
       frameId = requestAnimationFrame(() => {
         const pageIndex = Math.round(container.scrollLeft / window.innerWidth)
         if (pageIndex >= 0 && pageIndex < pages.length) {
+          currentPageRef.current = pageIndex
           setCurrentPage(pageIndex)
         }
       })

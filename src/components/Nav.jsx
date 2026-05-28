@@ -41,6 +41,15 @@ function Nav({ onNavigate, currentPage }) {
 
   return (
     <>
+      <style>{`
+        .nav-link-glow,
+        .nav-link-glow::before,
+        .nav-link-glow::after,
+        .nav-link-glow > .edge-light {
+          transition: none !important;
+        }
+      `}</style>
+
       {/* Desktop Left Sidebar */}
       <nav className="hidden md:flex fixed top-0 left-0 h-screen z-50 bg-black border-r border-white/10 flex-col items-center justify-between py-8 px-6 overflow-hidden">
         {/* Dither Background - z-0, no mouse interaction */}
@@ -133,26 +142,34 @@ function Nav({ onNavigate, currentPage }) {
 
         {/* Vertical Navigation Links with BorderGlow */}
         <div className="relative z-20 flex flex-col items-center gap-12">
-          {navLinks.map((link) => (
-            <BorderGlow
-              key={link.name}
-              className="w-32"
-              borderRadius={8}
-              glowRadius={12}
-              glowColor="260 80 70"
-              backgroundColor="#000000"
-              colors={['#8b5cf6', '#a855f7', '#6366f1']}
-            >
-              <a
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.page)}
-                aria-current={currentPage === navLinks.indexOf(link) ? 'page' : undefined}
-                className="w-full block py-6 text-lg font-bold text-gray-400 hover:text-white transition-colors duration-300 flex items-center justify-center text-center"
+          {navLinks.map((link, index) => {
+            const isActive = currentPage === index
+
+            return (
+              <BorderGlow
+                key={link.name}
+                className="nav-link-glow w-32"
+                borderRadius={8}
+                glowRadius={isActive ? 18 : 12}
+                glowColor="260 80 70"
+                glowIntensity={isActive ? 1.45 : 1}
+                fillOpacity={isActive ? 0.72 : 0.5}
+                backgroundColor={isActive ? 'rgba(36, 22, 62, 0.96)' : '#000000'}
+                colors={isActive ? ['#ffffff', '#a855f7', '#38bdf8'] : ['#8b5cf6', '#a855f7', '#6366f1']}
               >
-                {link.name}
-              </a>
-            </BorderGlow>
-          ))}
+                <a
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.page)}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`w-full block py-6 text-lg font-bold flex items-center justify-center text-center ${
+                    isActive ? 'text-white shadow-[inset_0_0_24px_rgba(168,85,247,0.24)]' : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  {link.name}
+                </a>
+              </BorderGlow>
+            )
+          })}
         </div>
 
         {/* Spacer */}
@@ -233,7 +250,7 @@ function Nav({ onNavigate, currentPage }) {
 
             {/* Mobile Menu Button */}
             <button
-              className="text-white transition-transform duration-300 ease-out"
+              className="text-white transition-transform duration-300 ease-out mr-3 p-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
               aria-expanded={isMenuOpen}
@@ -243,7 +260,7 @@ function Nav({ onNavigate, currentPage }) {
               }}
             >
               <svg
-                className="w-6 h-6"
+                className="w-8 h-8"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -284,29 +301,35 @@ function Nav({ onNavigate, currentPage }) {
               }}
             >
                 <div className="flex flex-col items-start gap-4">
-                  {navLinks.map((link) => (
-                    <BorderGlow
-                      key={link.name}
-                      className="w-36"
-                      borderRadius={8}
-                      glowRadius={12}
-                      glowColor="260 80 70"
-                      backgroundColor="#000000"
-                      colors={['#8b5cf6', '#a855f7', '#6366f1']}
-                    >
-                      <a
-                        href={link.href}
-                        aria-current={currentPage === navLinks.indexOf(link) ? 'page' : undefined}
-                        className={`w-full block py-4 text-base font-bold transition-colors duration-300 flex items-center justify-center text-center ${
-                          currentPage === navLinks.indexOf(link) ? 'text-white' : 'text-gray-400 hover:text-white'
-                        }`}
-                        onClick={(e) => handleNavClick(e, link.page)}
-                        tabIndex={isMenuOpen ? 0 : -1}
+                  {navLinks.map((link, index) => {
+                    const isActive = currentPage === index
+
+                    return (
+                      <BorderGlow
+                        key={link.name}
+                        className="nav-link-glow w-36"
+                        borderRadius={8}
+                        glowRadius={isActive ? 16 : 12}
+                        glowColor="260 80 70"
+                        glowIntensity={isActive ? 1.35 : 1}
+                        fillOpacity={isActive ? 0.72 : 0.5}
+                        backgroundColor={isActive ? 'rgba(36, 22, 62, 0.96)' : '#000000'}
+                        colors={isActive ? ['#ffffff', '#a855f7', '#38bdf8'] : ['#8b5cf6', '#a855f7', '#6366f1']}
                       >
-                        {link.name}
-                      </a>
-                    </BorderGlow>
-                  ))}
+                        <a
+                          href={link.href}
+                          aria-current={isActive ? 'page' : undefined}
+                          className={`w-full block py-4 text-base font-bold flex items-center justify-center text-center ${
+                            isActive ? 'text-white shadow-[inset_0_0_22px_rgba(168,85,247,0.24)]' : 'text-gray-400 hover:text-white'
+                          }`}
+                          onClick={(e) => handleNavClick(e, link.page)}
+                          tabIndex={isMenuOpen ? 0 : -1}
+                        >
+                          {link.name}
+                        </a>
+                      </BorderGlow>
+                    )
+                  })}
                 </div>
             </div>
           </div>

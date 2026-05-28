@@ -24,17 +24,12 @@ function About() {
     },
     {
       title: 'Growth',
-      description: 'Curious, consistent and quick to learn. I enjoy turning new concepts into working features through hands-on practice.',
+      description: 'Curious, consistent and quick to learn. Outside coding, I create electronic music as a hobby and enjoy shaping ideas into polished sound.',
       color: '#120F17',
     },
     {
       title: 'Foundation',
       description: 'Built on IT-focused education, a silver medal graduation and hands-on project work across frontend, backend and database basics.',
-      color: '#120F17',
-    },
-    {
-      title: 'Experience',
-      description: 'Technical sales experience at Klick, Elisa and Telo24 with e-commerce content, product data, digital services and customer solutions.',
       color: '#120F17',
     },
     {
@@ -50,6 +45,11 @@ function About() {
           </div>
         </div>
       ),
+      color: '#120F17',
+    },
+    {
+      title: 'Experience',
+      description: 'Technical sales experience at Klick, Elisa and Telo24 with e-commerce content, product data, digital services and customer solutions.',
       color: '#120F17',
     },
     {
@@ -74,7 +74,7 @@ function About() {
   ];
 
   const visibleAboutItems = isMobile
-    ? aboutItems.filter((_, index) => index !== 4)
+    ? aboutItems.filter((_, index) => index !== 3)
     : aboutItems
 
   return (
@@ -210,8 +210,8 @@ function About() {
           }
 
           @media (min-width: 768px) {
-            /* Cubes-kaart on desktopis 5. element; mobiilis on see eemaldatud. */
-            #about .card:nth-child(5) .card__content {
+            /* Cubes-kaart on desktopis 4. element; mobiilis on see eemaldatud. */
+            #about .card:nth-child(4) .card__content {
                position: absolute;
                inset: 0;
                width: 100%;
